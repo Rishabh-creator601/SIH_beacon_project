@@ -1,0 +1,131 @@
+80 runs to do (0 already in C:\Users\RISHABH\Desktop\SIH_hackathon\runs\evaluation\results.csv)
+[1/80] random                 hybrid  seed   1  acquired=True  locked= 64.4%  (ETA 110 min)
+[2/80] random                 hybrid  seed   2  acquired=True  locked= 39.0%  (ETA 84 min)
+[3/80] random                 hybrid  seed   3  acquired=True  locked= 60.7%  (ETA 75 min)
+[4/80] random                 hybrid  seed   4  acquired=True  locked= 50.8%  (ETA 71 min)
+[5/80] random                 hybrid  seed   5  acquired=True  locked= 92.4%  (ETA 65 min)
+[6/80] random                 hybrid  seed   6  acquired=True  locked= 94.4%  (ETA 64 min)
+[7/80] random                 hybrid  seed   7  acquired=True  locked= 90.6%  (ETA 63 min)
+[8/80] random                 hybrid  seed   8  acquired=True  locked= 96.3%  (ETA 66 min)
+[9/80] random                 hybrid  seed   9  acquired=True  locked= 96.7%  (ETA 68 min)
+[10/80] random                 hybrid  seed  10  acquired=True  locked= 97.4%  (ETA 66 min)
+[11/80] random                 hybrid  seed  11  acquired=True  locked= 63.7%  (ETA 64 min)
+[12/80] random                 hybrid  seed  12  acquired=True  locked= 54.6%  (ETA 61 min)
+[13/80] random                 hybrid  seed  13  acquired=True  locked= 77.3%  (ETA 58 min)
+[14/80] random                 hybrid  seed  14  acquired=True  locked= 38.7%  (ETA 56 min)
+[15/80] random                 hybrid  seed  15  acquired=True  locked= 97.2%  (ETA 54 min)
+[16/80] random                 hybrid  seed  16  acquired=True  locked= 93.1%  (ETA 52 min)
+[17/80] random                 hybrid  seed  17  acquired=False locked=  0.0%  (ETA 50 min)
+[18/80] random                 hybrid  seed  18  acquired=True  locked= 93.1%  (ETA 48 min)
+[19/80] random                 hybrid  seed  19  acquired=True  locked= 52.6%  (ETA 47 min)
+[20/80] random                 hybrid  seed  20  acquired=True  locked= 97.4%  (ETA 46 min)
+[21/80] random                 hybrid  seed  21  acquired=True  locked= 94.8%  (ETA 50 min)
+[22/80] random                 hybrid  seed  22  acquired=True  locked= 97.4%  (ETA 48 min)
+[23/80] random                 hybrid  seed  23  acquired=False locked=  0.0%  (ETA 48 min)
+[24/80] random                 hybrid  seed  24  acquired=True  locked= 96.5%  (ETA 48 min)
+[25/80] random                 hybrid  seed  25  acquired=True  locked= 90.8%  (ETA 48 min)
+[26/80] random                 hybrid  seed  26  acquired=True  locked= 97.4%  (ETA 50 min)
+[27/80] random                 hybrid  seed  27  acquired=True  locked= 93.9%  (ETA 52 min)
+[28/80] random                 hybrid  seed  28  acquired=True  locked= 65.8%  (ETA 53 min)
+[29/80] random                 hybrid  seed  29  acquired=False locked=  0.0%  (ETA 54 min)
+[30/80] random                 hybrid  seed  30  acquired=True  locked= 63.4%  (ETA 54 min)
+[31/80] random                 hybrid  seed  31  acquired=True  locked= 93.9%  (ETA 52 min)
+[32/80] random                 hybrid  seed  32  acquired=True  locked= 95.4%  (ETA 51 min)
+[33/80] random                 hybrid  seed  33  acquired=True  locked= 91.5%  (ETA 49 min)
+[34/80] random                 hybrid  seed  34  acquired=True  locked= 90.7%  (ETA 47 min)
+[35/80] random                 hybrid  seed  35  acquired=True  locked= 55.8%  (ETA 46 min)
+[36/80] random                 hybrid  seed  36  acquired=True  locked= 86.8%  (ETA 44 min)
+[37/80] random                 hybrid  seed  37  acquired=True  locked= 15.6%  (ETA 43 min)
+[38/80] random                 hybrid  seed  38  acquired=True  locked= 90.6%  (ETA 41 min)
+[39/80] random                 hybrid  seed  39  acquired=True  locked= 17.4%  (ETA 40 min)
+[40/80] random                 hybrid  seed  40  acquired=True  locked= 70.9%  (ETA 38 min)
+[41/80] random                 none    seed   1  acquired=False locked=  0.0%  (ETA 37 min)
+[42/80] random                 none    seed   2  acquired=False locked=  0.0%  (ETA 36 min)
+[43/80] random                 none    seed   3  acquired=False locked=  0.0%  (ETA 35 min)
+[44/80] random                 none    seed   4  acquired=True  locked= 77.9%  (ETA 33 min)
+[45/80] random                 none    seed   5  acquired=True  locked= 94.3%  (ETA 32 min)
+[46/80] random                 none    seed   6  acquired=True  locked= 96.7%  (ETA 31 min)
+[47/80] random                 none    seed   7  acquired=True  locked= 92.9%  (ETA 30 min)
+[48/80] random                 none    seed   8  acquired=True  locked= 98.7%  (ETA 29 min)
+[49/80] random                 none    seed   9  acquired=True  locked= 98.8%  (ETA 28 min)
+[50/80] random                 none    seed  10  acquired=True  locked= 99.8%  (ETA 27 min)
+[51/80] random                 none    seed  11  acquired=False locked=  0.0%  (ETA 26 min)
+[52/80] random                 none    seed  12  acquired=True  locked= 85.6%  (ETA 25 min)
+[53/80] random                 none    seed  13  acquired=True  locked= 65.1%  (ETA 24 min)
+[54/80] random                 none    seed  14  acquired=False locked=  0.0%  (ETA 23 min)
+[55/80] random                 none    seed  15  acquired=True  locked= 99.6%  (ETA 22 min)
+[56/80] random                 none    seed  16  acquired=True  locked= 93.7%  (ETA 21 min)
+[57/80] random                 none    seed  17  acquired=False locked=  0.0%  (ETA 20 min)
+[58/80] random                 none    seed  18  acquired=True  locked= 95.2%  (ETA 19 min)
+[59/80] random                 none    seed  19  acquired=False locked=  0.0%  (ETA 18 min)
+[60/80] random                 none    seed  20  acquired=True  locked= 99.8%  (ETA 17 min)
+[61/80] random                 none    seed  21  acquired=True  locked= 97.1%  (ETA 16 min)
+[62/80] random                 none    seed  22  acquired=True  locked= 99.8%  (ETA 15 min)
+[63/80] random                 none    seed  23  acquired=False locked=  0.0%  (ETA 14 min)
+[64/80] random                 none    seed  24  acquired=True  locked= 98.8%  (ETA 14 min)
+[65/80] random                 none    seed  25  acquired=True  locked= 93.6%  (ETA 13 min)
+[66/80] random                 none    seed  26  acquired=True  locked= 99.8%  (ETA 12 min)
+[67/80] random                 none    seed  27  acquired=False locked=  0.0%  (ETA 11 min)
+[68/80] random                 none    seed  28  acquired=True  locked= 64.3%  (ETA 10 min)
+[69/80] random                 none    seed  29  acquired=False locked=  0.0%  (ETA 9 min)
+[70/80] random                 none    seed  30  acquired=False locked=  0.0%  (ETA 8 min)
+[71/80] random                 none    seed  31  acquired=True  locked= 96.1%  (ETA 7 min)
+[72/80] random                 none    seed  32  acquired=True  locked= 97.6%  (ETA 7 min)
+[73/80] random                 none    seed  33  acquired=True  locked=  0.1%  (ETA 6 min)
+[74/80] random                 none    seed  34  acquired=True  locked= 92.9%  (ETA 5 min)
+[75/80] random                 none    seed  35  acquired=False locked=  0.0%  (ETA 4 min)
+[76/80] random                 none    seed  36  acquired=False locked=  0.0%  (ETA 3 min)
+[77/80] random                 none    seed  37  acquired=True  locked= 17.6%  (ETA 2 min)
+[78/80] random                 none    seed  38  acquired=True  locked= 92.8%  (ETA 2 min)
+[79/80] random                 none    seed  39  acquired=False locked=  0.0%  (ETA 1 min)
+[80/80] random                 none    seed  40  acquired=False locked=  0.0%  (ETA 0 min)
+# Multi-seed evaluation
+
+80 runs. Each run = one seed; random scenes also differ in beacon path, decoys, turbulence, vibration, clouds and initial pointing error.
+
+**Time locked** = share of the whole run with a confirmed lock on the true beacon (penalises slow / failed acquisition). **Retention** = locked share after the first lock (median over runs that acquired). **False-lock runs** = runs with > 1 s locked on a wrong object.
+
+| Suite | Scenario | Method | Runs | Acquired % [95% CI] | Acq. time median [IQR] (s) | Time locked mean ± 95% CI (%) | Runs ≥ 80% locked | Retention median (%) | False-lock runs (%) | Error median (px) | Proc. (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| random | random | hybrid | 40 | 92 [80-97] | 5.2 [2.2-16.8] | 71.5 ± 9.5 | 55 % | 100.0 | 8 | 3.56 | 8.1 |
+| random | random | none | 40 | 62 [47-76] | 2.3 [0.5-4.3] | 53.7 ± 14.4 | 50 % | 100.0 | 42 | 4.28 | 3.7 |
+
+## Random scenes, method `hybrid`: time locked (%) by scene property
+
+| Property | Bin | Runs | Time locked mean (%) | Acquired % |
+|---|---|---|---|---|
+| Turbulence | 0-1 | 10 | 73.5 | 90 |
+| Turbulence | 1-1.5 | 16 | 78.0 | 88 |
+| Turbulence | ≥ 1.5 | 14 | 62.6 | 100 |
+| Decoys | 0-0.5 | 12 | 66.7 | 83 |
+| Decoys | 0.5-2.5 | 9 | 82.7 | 100 |
+| Decoys | ≥ 2.5 | 19 | 69.2 | 95 |
+| Beacon speed (°/s) | 0-2 | 11 | 81.7 | 100 |
+| Beacon speed (°/s) | 2-3.5 | 11 | 80.1 | 100 |
+| Beacon speed (°/s) | ≥ 3.5 | 18 | 60.0 | 83 |
+| Clouds | yes | 20 | 75.1 | 95 |
+| Clouds | no | 20 | 67.9 | 90 |
+| Beacon path | circular | 10 | 75.7 | 100 |
+| Beacon path | lissajous | 16 | 72.3 | 94 |
+| Beacon path | random_walk | 14 | 67.5 | 86 |
+
+## Random scenes, method `none`: time locked (%) by scene property
+
+| Property | Bin | Runs | Time locked mean (%) | Acquired % |
+|---|---|---|---|---|
+| Turbulence | 0-1 | 10 | 52.0 | 60 |
+| Turbulence | 1-1.5 | 16 | 66.0 | 75 |
+| Turbulence | ≥ 1.5 | 14 | 40.9 | 50 |
+| Decoys | 0-0.5 | 12 | 70.5 | 83 |
+| Decoys | 0.5-2.5 | 9 | 61.6 | 67 |
+| Decoys | ≥ 2.5 | 19 | 39.4 | 47 |
+| Beacon speed (°/s) | 0-2 | 11 | 58.7 | 73 |
+| Beacon speed (°/s) | 2-3.5 | 11 | 58.2 | 64 |
+| Beacon speed (°/s) | ≥ 3.5 | 18 | 47.9 | 56 |
+| Clouds | yes | 20 | 50.4 | 60 |
+| Clouds | no | 20 | 57.0 | 65 |
+| Beacon path | circular | 10 | 51.3 | 60 |
+| Beacon path | lissajous | 16 | 58.6 | 62 |
+| Beacon path | random_walk | 14 | 49.8 | 64 |
+
+Saved C:\Users\RISHABH\Desktop\SIH_hackathon\runs\evaluation\summary.md, summary.csv and plots

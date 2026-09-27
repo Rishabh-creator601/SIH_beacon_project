@@ -1,0 +1,201 @@
+# =====================================================================
+#  FSOC Virtual Camera Tracking Simulator - default configuration
+#
+#  All angles are in DEGREES, all angular rates in DEG/S.
+#  Any user config passed with --config is deep-merged over this file,
+#  so a scenario file only needs to list the values it changes.
+# =====================================================================
+
+simulation:
+  fps: 30              # simulation frame rate -> time step dt = 1 / fps
+  duration: 60         # seconds of simulated time (0 = run until window closed)
+  seed: null           # random seed; null = new random scene every run (the seed
+                       # used is written to the report - pass it back to replay)
+  realtime: true       # GUI mode: throttle the loop to real time
+
+# Random scenes (fsoc/randomizer.py): each run draws a new beacon path, a
+# random number of decoys and random turbulence / vibration. The fixed test
+# scenarios in scenarios/ switch this off.
+randomize:
+  enabled: true
+  beacon_paths: [lissajous, circular, random_walk]
+  beacon_speed_dps: [0.8, 5.0]
+  beacon_intensity: [190, 250]
+  decoys: [0, 5]                  # min / max number of decoys
+  decoy_intensity: [150, 240]
+  decoy_speed_dps: [0.3, 4.0]
+  decoy_blink_probability: 0.5    # others are steady lights
+  turbulence_strength: [0.5, 2.0]   # >2 is extreme (twinkle beyond +-60 %)
+  vibration_strength: [0.3, 2.0]
+  cloud_probability: 0.5
+  initial_pointing_error_deg: [3.0, 10.0]   # open-loop (GPS/ephemeris) pointing error
+
+world:
+  az_range: [-30.0, 30.0]   # azimuth extent of the virtual sky (deg)
+  el_range: [-20.0, 20.0]   # elevation extent of the virtual sky (deg)
+  background_level: 18      # sky brightness (0-255)
+  num_stars: 600            # background point sources (clutter)
+  star_intensity: [10, 60]  # min / max star peak brightness (below detection floor)
+  star_sigma_px: 0.7        # star spot size (Gaussian sigma, pixels)
+
+camera:
+  resolution: [640, 480]    # sensor width, height (pixels)
+  fov_deg: [8.0, 6.0]       # horizontal, vertical field of view
+  initial_pointing: [0.0, 0.0]   # starting azimuth, elevation
+  max_rate_dps: 25.0        # pan-tilt slew-rate limit per axis
+  max_accel_dps2: 80.0      # pan-tilt acceleration limit per axis
+
+# One or more moving targets. Exactly one must have is_beacon: true;
+# the others are decoys (other lights the tracker must NOT lock onto).
+# Trajectory types: static, linear, lissajous, circular, random_walk
+# Optional blink: {frequency_hz, duty (on fraction), off_level (0 = fully off)}
+targets:
+  - name: beacon
+    is_beacon: true
+    intensity: 240          # peak brightness of the beacon spot
+    sigma_px: 2.0           # spot size (Gaussian sigma, pixels)
+    blink: {frequency_hz: 4.0, duty: 0.7, off_level: 0.3}
+    trajectory:
+      type: lissajous
+      center: [0.0, 0.0]
+      amplitude: [12.0, 8.0]      # deg
+      frequency: [0.030, 0.047]   # Hz
+      phase: [1.2, 0.3]           # rad (starts outside the initial FOV)
+  # Decoys are added in scenarios/decoys.yaml (see there for the format).
+
+detector:
+  threshold_mode: adaptive  # adaptive (median + k * noise) or fixed
+  k_sigma: 8.0              # adaptive: sigmas above background
+  min_threshold: 80         # adaptive: never go below this level
+  fixed_threshold: 120      # fixed mode threshold
+  min_area: 2               # blob area limits (pixels)
+  max_area: 400
+  blur_ksize: 3             # pre-detection smoothing (0 = off)
+  roi_half_px: 40           # lower-threshold window around the tracker prediction
+  roi_k_sigma: 5.0          # ...its threshold: background + k * noise
+  roi_min_threshold: 45     # ...but never below this
+
+# Which bright dot is the designated beacon? (see fsoc/identification.py)
+#   hybrid - average of cnn and blink (default; fewest false identifications)
+#   cnn   - AI: small CNN on a short clip of each candidate (needs the model file)
+#   blink - classical: power at the beacon's blink frequency
+#   none  - no identification: lock onto the brightest dot (baseline)
+identification:
+  method: hybrid
+  model_path: models/beacon_cnn.onnx
+  beacon_blink_hz: 4.0      # the designated beacon's blink rate ("code")
+  window_frames: 24         # history per candidate (0.8 s at 30 fps)
+  association_gate_deg: 0.25
+  evidence_frames: 90       # average clip log-odds over up to this many frames (3 s memory)
+  min_evidence_frames: 24   # no decision before this many clips: the blink test
+                            # then has 1.6 s of history (tells 2 Hz from 4 Hz)
+  accept_score: 0.7         # confirm a candidate as the beacon above this
+  reject_score: 0.2         # treat as NOT the beacon below this
+  verify_max_frames: 90     # give up on an unconfirmed candidate after this
+  drop_score: 0.35          # a LOCKED target averaging below this ...
+  drop_frames: 30           # ... for this many frames is dropped (false lock)
+  blacklist_s: 4.0          # ignore a rejected candidate for this long
+  min_reject_frames: 24     # rejecting needs at least as much evidence
+
+tracker:
+  acquire_frames: 5         # hits needed to confirm a new track as TRACKING
+  acquire_max_misses: 4     # consecutive misses that abort a tentative track
+  hold_frames: 6            # short gaps (blink / fades) that keep TRACKING state
+  max_coast_frames: 60      # max frames to predict through before declaring LOST
+  coast_max_sigma_deg: 1.0  # ...or stop earlier once the prediction is this uncertain
+  process_noise: 3.0        # Kalman accel noise (deg/s^2)
+  measurement_noise: 0.02   # Kalman measurement noise (deg)
+  gate_chi2: 11.6           # Mahalanobis gate (2 dof, ~99.7%)
+  gate_min_deg: 0.15        # always accept detections this close to the prediction
+
+controller:
+  kp: 5.0                   # proportional gain (1/s)
+  ki: 0.5                   # integral gain (1/s^2)
+  kd: 0.05                  # derivative gain
+  feedforward: 1.0          # target-velocity feed-forward (0..1)
+  integral_limit: 2.0       # anti-windup clamp (deg*s)
+  search:
+    pattern: spiral         # search pattern when target is lost
+    spacing_fov_frac: 0.8   # spiral arm spacing as fraction of smaller FOV
+    scan_speed_dps: 12.0    # linear scan speed along the spiral
+    max_radius_deg: 15.0    # restart spiral beyond this radius (keeps it near the prediction)
+    kp: 6.0                 # gain for following the scan point
+    predict_tau_s: 3.0      # spiral centre drifts along last velocity for ~tau
+    local_passes: 4         # local spirals (~12 s each) before one full-sky raster
+                            # pass - the raster is a last-resort fallback
+
+# ---------------------------------------------------------------------
+# Disturbances. Every block has `enabled` and `strength` (a multiplier on
+# its amplitudes, 0 = off, 1 = nominal, 2 = twice as strong ...).
+# Reference: with the default camera, 1 pixel = 0.0125 deg = 0.22 mrad.
+# ---------------------------------------------------------------------
+disturbances:
+  enabled: true             # master switch
+
+  vibration:                # platform vibration -> line-of-sight jitter
+    enabled: true
+    strength: 1.0
+    tones:                  # structural / engine modes
+      - {freq_hz: 7.0, amplitude_deg: 0.010}
+      - {freq_hz: 23.0, amplitude_deg: 0.005}
+    jitter_deg: 0.006       # broadband random jitter (1-sigma)
+    jitter_tau_s: 0.03      # its correlation time
+
+  turbulence:               # atmospheric turbulence
+    enabled: true
+    strength: 1.0
+    scintillation_index: 0.3    # sigma of log-intensity (twinkle)
+    scintillation_tau_s: 0.03
+    wander_px: 0.8          # angle-of-arrival jitter (1-sigma, pixels)
+    wander_tau_s: 0.1
+    blur_px: 0.6            # extra PSF width (Gaussian sigma, pixels)
+    warp_px: 0.6            # heat-shimmer image distortion (pixels)
+    warp_tau_s: 0.15
+    warp_grid: [16, 12]
+
+  clouds:                   # moving occluders
+    enabled: true
+    strength: 1.0           # scales optical depth
+    count: 4
+    size_deg: [1.5, 3.5]
+    optical_depth: [1.0, 4.0]   # transmission = exp(-depth) at cloud centre
+    wind_dps: [0.8, 0.15]
+    brightness: 35          # cloud glow level (0-255)
+
+  dropouts:                 # beacon fully blocked for a while
+    enabled: false
+    mean_interval_s: 15.0
+    duration_s: [0.5, 2.0]
+    start_after_s: 8.0
+
+  glints:                   # short false flashes inside the FOV
+    enabled: true
+    strength: 1.0           # scales the rate
+    rate_hz: 0.3
+    duration_s: [0.05, 0.4]
+    intensity: [150, 255]
+    sigma_px: 1.5
+
+  glare:                    # sun / moon (bright extended source)
+    enabled: false
+    strength: 1.0
+    position_deg: [10.0, 12.0]
+    size_deg: 3.0
+    level: 120
+
+  sensor:                   # camera electronics
+    enabled: true
+    strength: 1.0           # scales all noise terms
+    motion_blur: true
+    exposure_s: 0.01        # longer exposure -> more motion blur
+    read_noise: 3.0         # grey levels (1-sigma)
+    shot_noise: 0.5         # sigma = shot_noise * sqrt(signal)
+    hot_pixels: 25          # fixed bright defective pixels
+    hot_pixel_level: [60, 200]
+    salt_per_frame: 4       # random single-pixel hits per frame
+    salt_level: 255
+
+metrics:
+  lock_tolerance_px: 8.0    # tracker estimate must be this close to the true beacon
+  handover_radius_px: 10.0  # "ready for fine pointing" zone around boresight
+  output_dir: runs          # where performance logs are written

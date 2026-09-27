@@ -1,0 +1,49 @@
+Dataset: 16218 samples, clips of 24 x 24x24, beacon code 4.0 Hz
+Train 13751 (4002 beacon) | validation 2467 (762 beacon)
+BeaconNet: 62,818 parameters
+epoch   1  train loss 0.5354 acc 0.647  |  val loss 0.6188 acc 0.518   [30 s]
+epoch   2  train loss 0.3704 acc 0.807  |  val loss 0.3743 acc 0.804   [58 s]
+epoch   3  train loss 0.2555 acc 0.892  |  val loss 0.4293 acc 0.757   [89 s]
+epoch   4  train loss 0.2405 acc 0.898  |  val loss 0.6197 acc 0.647   [147 s]
+epoch   5  train loss 0.2181 acc 0.905  |  val loss 0.3182 acc 0.846   [190 s]
+epoch   6  train loss 0.2093 acc 0.911  |  val loss 0.2880 acc 0.888   [256 s]
+epoch   7  train loss 0.1948 acc 0.918  |  val loss 0.3440 acc 0.817   [313 s]
+epoch   8  train loss 0.1905 acc 0.920  |  val loss 0.3026 acc 0.867   [354 s]
+epoch   9  train loss 0.1756 acc 0.925  |  val loss 0.2527 acc 0.895   [420 s]
+epoch  10  train loss 0.1687 acc 0.929  |  val loss 0.2510 acc 0.888   [481 s]
+epoch  11  train loss 0.1675 acc 0.929  |  val loss 0.2593 acc 0.891   [539 s]
+epoch  12  train loss 0.1578 acc 0.935  |  val loss 0.2381 acc 0.891   [593 s]
+epoch  13  train loss 0.1476 acc 0.938  |  val loss 0.2351 acc 0.900   [626 s]
+epoch  14  train loss 0.1410 acc 0.944  |  val loss 0.2553 acc 0.890   [684 s]
+epoch  15  train loss 0.1391 acc 0.941  |  val loss 0.2317 acc 0.897   [745 s]
+epoch  16  train loss 0.1352 acc 0.944  |  val loss 0.2642 acc 0.869   [782 s]
+epoch  17  train loss 0.1282 acc 0.947  |  val loss 0.2304 acc 0.907   [818 s]
+epoch  18  train loss 0.1195 acc 0.949  |  val loss 0.2624 acc 0.878   [847 s]
+epoch  19  train loss 0.1152 acc 0.953  |  val loss 0.2561 acc 0.895   [873 s]
+epoch  20  train loss 0.1126 acc 0.955  |  val loss 0.2418 acc 0.896   [903 s]
+epoch  21  train loss 0.1043 acc 0.957  |  val loss 0.2336 acc 0.904   [929 s]
+epoch  22  train loss 0.1022 acc 0.958  |  val loss 0.2422 acc 0.897   [955 s]
+epoch  23  train loss 0.0980 acc 0.960  |  val loss 0.2363 acc 0.905   [978 s]
+epoch  24  train loss 0.0956 acc 0.961  |  val loss 0.2371 acc 0.904   [1000 s]
+epoch  25  train loss 0.0946 acc 0.960  |  val loss 0.2382 acc 0.904   [1024 s]
+C:\Users\RISHABH\Desktop\SIH_hackathon\tools\train_classifier.py:153: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter will be the default. To switch now, set dynamo=True in torch.onnx.export. This new exporter supports features like exporting LLMs with DynamicCache. We encourage you to try it and share feedback to help improve the experience. Learn more about the new export logic: https://pytorch.org/docs/stable/onnx_dynamo.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html.
+  torch.onnx.export(model, dummy, str(path), input_names=["clip"], output_names=["logits"],
+
+Validation results (scenes never seen in training):
+metric            CNN    blink
+accuracy        0.907    0.853
+precision       0.802    0.781
+recall          0.929    0.726
+f1              0.861    0.752
+roc_auc         0.972    0.882
+
+Accuracy per candidate type:
+  beacon             n=  762   CNN 0.929   blink 0.726
+  steady_decoy       n=  293   CNN 0.891   blink 0.898
+  wrong_rate_decoy   n=  333   CNN 0.790   blink 0.934
+  near_rate_decoy    n=  272   CNN 0.919   blink 0.801
+  other              n=  538   CNN 0.996   blink 0.946
+  harmonic_decoy     n=  269   CNN 0.818   blink 0.926
+
+ONNX (OpenCV DNN) vs PyTorch max difference: 1.19e-06
+Saved model and report to models\candidate

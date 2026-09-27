@@ -1,0 +1,87 @@
+{
+  "dataset": {
+    "samples": 17953,
+    "train": 13672,
+    "validation": 4281,
+    "clip_frames": 24,
+    "patch_px": 24,
+    "beacon_hz": 4.0
+  },
+  "model": {
+    "name": "BeaconNet",
+    "parameters": 62818,
+    "epochs": 25,
+    "cpu_ms_per_candidate_torch": 0.291
+  },
+  "cnn": {
+    "accuracy": 0.9327,
+    "precision": 0.8319,
+    "recall": 0.8609,
+    "f1": 0.8462,
+    "roc_auc": 0.9756,
+    "confusion": {
+      "tp": 792,
+      "fp": 160,
+      "tn": 3201,
+      "fn": 128
+    }
+  },
+  "blink_baseline": {
+    "accuracy": 0.8928,
+    "precision": 0.7471,
+    "recall": 0.7576,
+    "f1": 0.7523,
+    "roc_auc": 0.9026,
+    "confusion": {
+      "tp": 697,
+      "fp": 236,
+      "tn": 3125,
+      "fn": 223
+    }
+  },
+  "cnn_per_kind": {
+    "beacon": {
+      "n": 920,
+      "accuracy": 0.8609
+    },
+    "steady_decoy": {
+      "n": 404,
+      "accuracy": 0.8589
+    },
+    "wrong_rate_decoy": {
+      "n": 575,
+      "accuracy": 0.8504
+    },
+    "near_rate_decoy": {
+      "n": 135,
+      "accuracy": 0.963
+    },
+    "other": {
+      "n": 2247,
+      "accuracy": 0.9947
+    }
+  },
+  "blink_per_kind": {
+    "beacon": {
+      "n": 920,
+      "accuracy": 0.7576
+    },
+    "steady_decoy": {
+      "n": 404,
+      "accuracy": 0.8564
+    },
+    "wrong_rate_decoy": {
+      "n": 575,
+      "accuracy": 0.9687
+    },
+    "near_rate_decoy": {
+      "n": 135,
+      "accuracy": 0.9333
+    },
+    "other": {
+      "n": 2247,
+      "accuracy": 0.9328
+    }
+  },
+  "onnx_max_abs_diff": 9.5367431640625e-07
+}

@@ -1,0 +1,9 @@
+# Ideal conditions: no disturbances at all. Baseline for comparison.
+disturbances:
+  enabled: false
+
+# Fixed test case: no random scene, fixed seed (reproducible results).
+randomize:
+  enabled: false
+simulation:
+  seed: 42

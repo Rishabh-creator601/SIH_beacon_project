@@ -1,0 +1,15 @@
+# Strong atmospheric turbulence and heavy platform vibration
+# (e.g. low-altitude link over hot ground, from a UAV with rotor vibration).
+disturbances:
+  vibration:
+    strength: 2.5
+  turbulence:
+    strength: 2.5
+  sensor:
+    strength: 1.5
+
+# Fixed test case: no random scene, fixed seed (reproducible results).
+randomize:
+  enabled: false
+simulation:
+  seed: 42

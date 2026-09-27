@@ -1,0 +1,20 @@
+FSOC Coarse Tracking - Performance Report
+============================================
+generated                     : 2026-09-26T18:34:24
+frames                        : 1800
+simulation_duration_s         : 60.0
+wall_clock_duration_s         : 93.987
+simulation_fps                : 30.0
+achieved_fps                  : 19.14
+mean_processing_ms            : 8.705
+max_processing_ms             : 83.376
+processing_throughput_fps     : 114.9
+mean_render_ms                : 42.258
+acquisition_time_s            : None
+acquired                      : False
+lock_losses                   : 0
+false_lock_frames             : 22
+beacon_in_fov_pct             : 4.5
+beacon_occluded_pct           : 25.67
+lock_retention_pct            : 0.0
+lock_retention_unoccluded_pct : 0.0

@@ -1,0 +1,38 @@
+# Identification test: several other lights of similar brightness.
+# Only the beacon blinks at 4 Hz; the tracker must lock onto it and
+# ignore the decoys. (The whole target list is replaced, so the beacon
+# is repeated here.)
+targets:
+  - name: beacon
+    is_beacon: true
+    intensity: 240
+    sigma_px: 2.0
+    blink: {frequency_hz: 4.0, duty: 0.7, off_level: 0.3}
+    trajectory:
+      type: lissajous
+      center: [0.0, 0.0]
+      amplitude: [12.0, 8.0]
+      frequency: [0.030, 0.047]
+      phase: [1.2, 0.3]
+
+  - name: decoy_steady_1          # steady light, e.g. another aircraft
+    intensity: 230
+    sigma_px: 1.8
+    trajectory: {type: linear, start: [-15.0, 5.0], velocity: [1.5, -0.6]}
+
+  - name: decoy_steady_2
+    intensity: 220
+    sigma_px: 2.2
+    trajectory: {type: circular, center: [8.0, -6.0], radius: 5.0, period: 40.0}
+
+  - name: decoy_blinking          # blinks, but at the wrong rate
+    intensity: 235
+    sigma_px: 2.0
+    blink: {frequency_hz: 1.0, duty: 0.5, off_level: 0.0}
+    trajectory: {type: random_walk, start: [5.0, 5.0], speed: 1.5, turn_rate_std: 0.5}
+
+# Fixed test case: no random scene, fixed seed (reproducible results).
+randomize:
+  enabled: false
+simulation:
+  seed: 42

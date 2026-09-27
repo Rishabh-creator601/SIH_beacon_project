@@ -1,0 +1,29 @@
+# Fast, unpredictable manoeuvring target (agile UAV). Tests the
+# controller's slew-rate headroom and the Kalman filter's agility.
+targets:
+  - name: beacon
+    is_beacon: true
+    intensity: 240
+    sigma_px: 2.0
+    blink: {frequency_hz: 4.0, duty: 0.7, off_level: 0.3}
+    trajectory:
+      type: random_walk
+      start: [8.0, 4.0]
+      speed: 8.0          # deg/s
+      turn_rate_std: 1.0  # rad/s: hard, frequent turns
+      turn_tau_s: 1.0
+
+tracker:
+  process_noise: 15.0     # expect large accelerations
+
+# Clouds are tested separately in 03_occlusion; here they would mix a
+# second difficulty into what is meant to be a pure agility test.
+disturbances:
+  clouds:
+    enabled: false
+
+# Fixed test case: no random scene, fixed seed (reproducible results).
+randomize:
+  enabled: false
+simulation:
+  seed: 42
