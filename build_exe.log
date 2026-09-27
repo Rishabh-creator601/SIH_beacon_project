@@ -1,9 +1,9 @@
-135 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
-135 INFO: Python: 3.11.9
-147 INFO: Platform: Windows-10-10.0.26200-SP0
-147 INFO: Python environment: C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv
-151 INFO: Removing temporary files and cleaning cache in C:\Users\RISHABH\AppData\Local\pyinstaller
-160 INFO: Module search paths (PYTHONPATH):
+235 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
+235 INFO: Python: 3.11.9
+253 INFO: Platform: Windows-10-10.0.26200-SP0
+253 INFO: Python environment: C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv
+258 INFO: Removing temporary files and cleaning cache in C:\Users\RISHABH\AppData\Local\pyinstaller
+272 INFO: Module search paths (PYTHONPATH):
 ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\tools',
  'C:\\Program Files\\Python311\\python311.zip',
  'C:\\Program Files\\Python311\\DLLs',
@@ -12,127 +12,127 @@
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv',
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages',
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon']
-475 INFO: Appending 'datas' from .spec
-476 INFO: checking Analysis
-476 INFO: Building Analysis because Analysis-00.toc is non existent
-476 INFO: Looking for Python shared library...
-476 INFO: Using Python shared library: C:\Program Files\Python311\python311.dll
-476 INFO: Running Analysis Analysis-00.toc
-476 INFO: Target bytecode optimization level: 0
-476 INFO: Initializing module dependency graph...
-478 INFO: Initializing module graph hook caches...
-506 INFO: Analyzing modules for base_library.zip ...
-1329 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-1403 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-3013 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-3184 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-6481 INFO: Caching module dependency graph...
-6547 INFO: Analyzing C:\Users\RISHABH\Desktop\SIH_hackathon\app.py
-6880 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-7487 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-7492 INFO: SetuptoolsInfo: initializing cached setuptools info...
-8258 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-8756 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-9226 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-9914 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-11654 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-11890 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-12984 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-14916 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-15728 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-16280 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-16586 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-17492 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-17802 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-18038 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-18485 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-18885 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-20519 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-20777 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-21087 INFO: Processing standard module hook 'hook-matplotlib.figure.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-22843 INFO: Processing standard module hook 'hook-dateutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-23024 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-27113 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-27341 INFO: Processing standard module hook 'hook-reportlab.lib.utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-27515 INFO: Processing standard module hook 'hook-reportlab.pdfbase._fontdata.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-30758 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-30871 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-31037 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-32190 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-38693 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-47716 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-92498 INFO: Processing standard module hook 'hook-pyqtgraph.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-381 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-516 WARNING: Failed to collect submodules for 'pyqtgraph.jupyter' because importing 'pyqtgraph.jupyter' raised: ModuleNotFoundError: No module named 'jupyter_rfb'
-93902 INFO: hook-pyqtgraph: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
-93944 INFO: Processing standard module hook 'hook-PySide6.QtSvg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-94908 INFO: Processing standard module hook 'hook-PySide6.QtOpenGLWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-97175 INFO: Processing standard module hook 'hook-matplotlib.backends.backend_qtagg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-97229 INFO: Processing standard module hook 'hook-matplotlib.backends.qt_compat.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-97230 INFO: hook-matplotlib.backends.qt_compat: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
-99284 INFO: Processing standard module hook 'hook-OpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-75 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-105255 INFO: Analyzing hidden import 'OpenGL.platform.win32'
-105326 INFO: Processing module hooks (post-graph stage)...
-105583 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-105583 INFO: Matplotlib backend selection method: automatic discovery of used backends
-105616 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'fsoc.report': ['Agg']
-105617 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['Agg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
-105920 INFO: Selected matplotlib backends: ['Agg']
-105920 INFO: Extra dists for selected matplotlib backends: []
-106129 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-108465 INFO: Processing standard module hook 'hook-PySide6.QtOpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-113423 INFO: Performing binary vs. data reclassification (446 entries)
-114633 INFO: Looking for ctypes DLLs
-115366 INFO: Analyzing run-time hooks ...
-115374 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-115377 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-115380 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-115383 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-115385 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
-115389 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-115403 INFO: Including run-time hook 'pyi_rth_pyqtgraph_multiprocess.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
-115407 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-115479 INFO: Creating base_library.zip...
-115519 INFO: Looking for dynamic libraries
-116969 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\shiboken6', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\numpy.libs', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
-116969 INFO: Extra DLL search directories (PATH): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PySide6']
-120831 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle32.vc9.dll'.
-120831 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut64.vc9.dll'.
-120831 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut32.vc9.dll'.
-120831 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle64.vc9.dll'.
-120857 INFO: Warnings written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\warn-fsoc_onedir.txt
-121022 INFO: Graph cross-reference written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\xref-fsoc_onedir.html
-121133 INFO: checking PYZ
-121133 INFO: Building PYZ because PYZ-00.toc is non existent
-121134 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\PYZ-00.pyz
-123087 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\PYZ-00.pyz completed successfully.
-123133 INFO: checking PKG
-123133 INFO: Building PKG because PKG-00.toc is non existent
-123133 INFO: Building PKG (CArchive) FSOC_Simulator.pkg
-123192 INFO: Building PKG (CArchive) FSOC_Simulator.pkg completed successfully.
-123194 INFO: Bootloader C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
-123194 INFO: checking EXE
-123194 INFO: Building EXE because EXE-00.toc is non existent
-123194 INFO: Building EXE from EXE-00.toc
-123194 INFO: Copying bootloader EXE to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\FSOC_Simulator.exe
-123450 INFO: Copying icon to EXE
-123542 INFO: Copying 0 resources to EXE
-123542 INFO: Embedding manifest in EXE
-123629 INFO: Appending PKG archive to EXE
-123774 INFO: Fixing EXE headers
-124329 INFO: Building EXE from EXE-00.toc completed successfully.
-124339 INFO: checking COLLECT
-124339 INFO: Building COLLECT because COLLECT-00.toc is non existent
-124340 INFO: Building COLLECT COLLECT-00.toc
-125926 INFO: Building COLLECT COLLECT-00.toc completed successfully.
-125940 INFO: Build complete! The results are available in: C:\Users\RISHABH\Desktop\SIH_hackathon\dist
-126055 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
-126055 INFO: Python: 3.11.9
-126055 INFO: Platform: Windows-10-10.0.26200-SP0
-126055 INFO: Python environment: C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv
-126059 INFO: Removing temporary files and cleaning cache in C:\Users\RISHABH\AppData\Local\pyinstaller
-126077 INFO: Module search paths (PYTHONPATH):
+942 INFO: Appending 'datas' from .spec
+946 INFO: checking Analysis
+947 INFO: Building Analysis because Analysis-00.toc is non existent
+947 INFO: Looking for Python shared library...
+947 INFO: Using Python shared library: C:\Program Files\Python311\python311.dll
+947 INFO: Running Analysis Analysis-00.toc
+947 INFO: Target bytecode optimization level: 0
+947 INFO: Initializing module dependency graph...
+950 INFO: Initializing module graph hook caches...
+987 INFO: Analyzing modules for base_library.zip ...
+3338 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+3552 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+6799 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7009 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10422 INFO: Caching module dependency graph...
+10535 INFO: Analyzing C:\Users\RISHABH\Desktop\SIH_hackathon\app.py
+10993 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+11862 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+11868 INFO: SetuptoolsInfo: initializing cached setuptools info...
+13025 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+13525 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+13856 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+14412 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+16091 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+16275 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+17319 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+19743 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+20508 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+21420 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+21995 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+22865 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+23180 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+23460 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+24091 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+24450 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+26483 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+26649 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+27053 INFO: Processing standard module hook 'hook-matplotlib.figure.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+28869 INFO: Processing standard module hook 'hook-dateutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+29077 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+32983 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+33246 INFO: Processing standard module hook 'hook-reportlab.lib.utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+33448 INFO: Processing standard module hook 'hook-reportlab.pdfbase._fontdata.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+37907 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+38158 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+38422 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+40240 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+49379 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+61983 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+127986 INFO: Processing standard module hook 'hook-pyqtgraph.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+825 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+1136 WARNING: Failed to collect submodules for 'pyqtgraph.jupyter' because importing 'pyqtgraph.jupyter' raised: ModuleNotFoundError: No module named 'jupyter_rfb'
+130663 INFO: hook-pyqtgraph: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
+130752 INFO: Processing standard module hook 'hook-PySide6.QtSvg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+132262 INFO: Processing standard module hook 'hook-PySide6.QtOpenGLWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+135132 INFO: Processing standard module hook 'hook-matplotlib.backends.backend_qtagg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+135202 INFO: Processing standard module hook 'hook-matplotlib.backends.qt_compat.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+135202 INFO: hook-matplotlib.backends.qt_compat: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
+137911 INFO: Processing standard module hook 'hook-OpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+135 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+149161 INFO: Analyzing hidden import 'OpenGL.platform.win32'
+149267 INFO: Processing module hooks (post-graph stage)...
+149882 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+149884 INFO: Matplotlib backend selection method: automatic discovery of used backends
+150003 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'fsoc.report': ['Agg']
+150004 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['Agg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
+150569 INFO: Selected matplotlib backends: ['Agg']
+150571 INFO: Extra dists for selected matplotlib backends: []
+151256 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+155384 INFO: Processing standard module hook 'hook-PySide6.QtOpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+162743 INFO: Performing binary vs. data reclassification (446 entries)
+162932 INFO: Looking for ctypes DLLs
+163956 INFO: Analyzing run-time hooks ...
+163965 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163971 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163975 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163978 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+163980 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+163983 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+163995 INFO: Including run-time hook 'pyi_rth_pyqtgraph_multiprocess.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+163999 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+164076 INFO: Creating base_library.zip...
+164134 INFO: Looking for dynamic libraries
+166580 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\shiboken6', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\numpy.libs', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
+166580 INFO: Extra DLL search directories (PATH): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PySide6']
+171929 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut32.vc9.dll'.
+171930 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle64.vc9.dll'.
+171931 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut64.vc9.dll'.
+171932 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle32.vc9.dll'.
+172043 INFO: Warnings written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\warn-fsoc_onedir.txt
+172412 INFO: Graph cross-reference written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\xref-fsoc_onedir.html
+172519 INFO: checking PYZ
+172519 INFO: Building PYZ because PYZ-00.toc is non existent
+172519 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\PYZ-00.pyz
+175265 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\PYZ-00.pyz completed successfully.
+175306 INFO: checking PKG
+175308 INFO: Building PKG because PKG-00.toc is non existent
+175308 INFO: Building PKG (CArchive) FSOC_Simulator.pkg
+175396 INFO: Building PKG (CArchive) FSOC_Simulator.pkg completed successfully.
+175398 INFO: Bootloader C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+175398 INFO: checking EXE
+175398 INFO: Building EXE because EXE-00.toc is non existent
+175398 INFO: Building EXE from EXE-00.toc
+175398 INFO: Copying bootloader EXE to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onedir\fsoc_onedir\FSOC_Simulator.exe
+175541 INFO: Copying icon to EXE
+175657 INFO: Copying 0 resources to EXE
+175657 INFO: Embedding manifest in EXE
+175742 INFO: Appending PKG archive to EXE
+175916 INFO: Fixing EXE headers
+176571 INFO: Building EXE from EXE-00.toc completed successfully.
+176582 INFO: checking COLLECT
+176582 INFO: Building COLLECT because COLLECT-00.toc is non existent
+176583 INFO: Building COLLECT COLLECT-00.toc
+179108 INFO: Building COLLECT COLLECT-00.toc completed successfully.
+179149 INFO: Build complete! The results are available in: C:\Users\RISHABH\Desktop\SIH_hackathon\dist
+179447 INFO: PyInstaller: 6.22.3, contrib hooks: 2026.7
+179447 INFO: Python: 3.11.9
+179447 INFO: Platform: Windows-10-10.0.26200-SP0
+179447 INFO: Python environment: C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv
+179454 INFO: Removing temporary files and cleaning cache in C:\Users\RISHABH\AppData\Local\pyinstaller
+179519 INFO: Module search paths (PYTHONPATH):
 ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\tools',
  'C:\\Program Files\\Python311\\python311.zip',
  'C:\\Program Files\\Python311\\DLLs',
@@ -142,115 +142,115 @@
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages',
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon',
  'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon']
-126366 INFO: Appending 'datas' from .spec
-126367 INFO: checking Analysis
-126367 INFO: Building Analysis because Analysis-01.toc is non existent
-126368 INFO: Looking for Python shared library...
-126368 INFO: Using Python shared library: C:\Program Files\Python311\python311.dll
-126368 INFO: Running Analysis Analysis-01.toc
-126368 INFO: Target bytecode optimization level: 0
-126368 INFO: Reusing cached module dependency graph...
-126412 INFO: Initializing module graph hook caches...
-126433 INFO: Analyzing C:\Users\RISHABH\Desktop\SIH_hackathon\app.py
-126634 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-126839 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127042 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127179 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-127330 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127331 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127573 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127739 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-127999 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-128709 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-128783 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-129300 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-130667 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-130747 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-131472 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-131931 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-132279 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-132912 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-133123 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-133264 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-133765 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-134052 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-135427 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-135526 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-135842 INFO: Processing standard module hook 'hook-matplotlib.figure.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-137073 INFO: Processing standard module hook 'hook-dateutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-137195 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-139732 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
-139958 INFO: Processing standard module hook 'hook-reportlab.lib.utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-140117 INFO: Processing standard module hook 'hook-reportlab.pdfbase._fontdata.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-143263 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-143431 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-143436 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-144579 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-146026 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-147647 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-148480 INFO: Processing standard module hook 'hook-pyqtgraph.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-374 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-500 WARNING: Failed to collect submodules for 'pyqtgraph.jupyter' because importing 'pyqtgraph.jupyter' raised: ModuleNotFoundError: No module named 'jupyter_rfb'
-149777 INFO: hook-pyqtgraph: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
-149816 INFO: Processing standard module hook 'hook-PySide6.QtSvg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-150045 INFO: Processing standard module hook 'hook-PySide6.QtOpenGLWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-151284 INFO: Processing standard module hook 'hook-matplotlib.backends.backend_qtagg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-151293 INFO: Processing standard module hook 'hook-matplotlib.backends.qt_compat.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-151293 INFO: hook-matplotlib.backends.qt_compat: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
-153029 INFO: Processing standard module hook 'hook-OpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
-72 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
-159928 INFO: Analyzing hidden import 'OpenGL.platform.win32'
-160034 INFO: Processing module hooks (post-graph stage)...
-160453 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-160453 INFO: Matplotlib backend selection method: automatic discovery of used backends
-160505 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'fsoc.report': ['Agg']
-160505 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['Agg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
-160811 INFO: Selected matplotlib backends: ['Agg']
-160811 INFO: Extra dists for selected matplotlib backends: []
-161196 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-163965 INFO: Processing standard module hook 'hook-PySide6.QtOpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-164249 INFO: Performing binary vs. data reclassification (446 entries)
-164375 INFO: Looking for ctypes DLLs
-165066 INFO: Analyzing run-time hooks ...
-165070 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-165073 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-165075 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-165077 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-165079 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
-165080 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
-165094 INFO: Including run-time hook 'pyi_rth_pyqtgraph_multiprocess.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
-165098 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
-165156 INFO: Creating base_library.zip...
-165173 INFO: Looking for dynamic libraries
-166375 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\shiboken6', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\numpy.libs', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
-166375 INFO: Extra DLL search directories (PATH): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PySide6']
-169753 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle32.vc9.dll'.
-169753 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut64.vc9.dll'.
-169753 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut32.vc9.dll'.
-169754 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle64.vc9.dll'.
-169833 INFO: Warnings written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\warn-fsoc_onefile.txt
-170082 INFO: Graph cross-reference written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\xref-fsoc_onefile.html
-170149 INFO: checking PYZ
-170150 INFO: Building PYZ because PYZ-01.toc is non existent
-170150 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\PYZ-01.pyz
-172068 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\PYZ-01.pyz completed successfully.
-172121 INFO: checking PKG
-172121 INFO: Building PKG because PKG-01.toc is non existent
-172121 INFO: Building PKG (CArchive) FSOC_Simulator.pkg
-216086 INFO: Building PKG (CArchive) FSOC_Simulator.pkg completed successfully.
-216111 INFO: Bootloader C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
-216112 INFO: checking EXE
-216112 INFO: Building EXE because EXE-01.toc is non existent
-216112 INFO: Building EXE from EXE-01.toc
-216112 INFO: Copying bootloader EXE to C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator.exe
-216230 INFO: Copying icon to EXE
-216324 INFO: Copying 0 resources to EXE
-216324 INFO: Embedding manifest in EXE
-216418 INFO: Appending PKG archive to EXE
-216564 INFO: Fixing EXE headers
-217470 INFO: Building EXE from EXE-01.toc completed successfully.
-217483 INFO: Build complete! The results are available in: C:\Users\RISHABH\Desktop\SIH_hackathon\dist
+180379 INFO: Appending 'datas' from .spec
+180383 INFO: checking Analysis
+180383 INFO: Building Analysis because Analysis-01.toc is non existent
+180383 INFO: Looking for Python shared library...
+180383 INFO: Using Python shared library: C:\Program Files\Python311\python311.dll
+180383 INFO: Running Analysis Analysis-01.toc
+180384 INFO: Target bytecode optimization level: 0
+180384 INFO: Reusing cached module dependency graph...
+180450 INFO: Initializing module graph hook caches...
+180512 INFO: Analyzing C:\Users\RISHABH\Desktop\SIH_hackathon\app.py
+180971 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+181425 INFO: Processing standard module hook 'hook-math.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+181787 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+182019 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+182304 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+182305 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+182748 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+183105 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+183659 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+185208 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+185380 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+186448 INFO: Processing standard module hook 'hook-webbrowser.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+188878 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+189066 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+190125 INFO: Processing standard module hook 'hook-cv2.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+191079 INFO: Processing standard module hook 'hook-matplotlib.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+191763 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+192633 INFO: Processing standard module hook 'hook-matplotlib.backend_bases.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+192919 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+193264 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+193785 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+194120 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+195539 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+195667 INFO: Processing standard module hook 'hook-matplotlib.pyplot.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+196011 INFO: Processing standard module hook 'hook-matplotlib.figure.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+197386 INFO: Processing standard module hook 'hook-dateutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+197499 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+200486 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+200692 INFO: Processing standard module hook 'hook-reportlab.lib.utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+200851 INFO: Processing standard module hook 'hook-reportlab.pdfbase._fontdata.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+204208 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+204388 INFO: Processing standard module hook 'hook-PySide6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+204394 INFO: Processing standard module hook 'hook-shiboken6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+205678 INFO: Processing standard module hook 'hook-PySide6.QtWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+207240 INFO: Processing standard module hook 'hook-PySide6.QtCore.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+209259 INFO: Processing standard module hook 'hook-PySide6.QtGui.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+210176 INFO: Processing standard module hook 'hook-pyqtgraph.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+412 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+561 WARNING: Failed to collect submodules for 'pyqtgraph.jupyter' because importing 'pyqtgraph.jupyter' raised: ModuleNotFoundError: No module named 'jupyter_rfb'
+211824 INFO: hook-pyqtgraph: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
+211881 INFO: Processing standard module hook 'hook-PySide6.QtSvg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+212118 INFO: Processing standard module hook 'hook-PySide6.QtOpenGLWidgets.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+213602 INFO: Processing standard module hook 'hook-matplotlib.backends.backend_qtagg.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+213610 INFO: Processing standard module hook 'hook-matplotlib.backends.qt_compat.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+213610 INFO: hook-matplotlib.backends.qt_compat: selected 'PySide6' as Qt bindings because hook for 'PySide6' has been run before.
+215756 INFO: Processing standard module hook 'hook-OpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+82 INFO: No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+223800 INFO: Analyzing hidden import 'OpenGL.platform.win32'
+223920 INFO: Processing module hooks (post-graph stage)...
+224405 INFO: Processing standard module hook 'hook-matplotlib.backends.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+224406 INFO: Matplotlib backend selection method: automatic discovery of used backends
+224509 INFO: Discovered Matplotlib backend(s) via `matplotlib.use()` call in module 'fsoc.report': ['Agg']
+224509 INFO: The following Matplotlib backends were discovered by scanning for `matplotlib.use()` calls: ['Agg']. If your backend of choice is not in this list, either add a `matplotlib.use()` call to your code, or configure the backend collection via hook options (see: https://pyinstaller.org/en/stable/hooks-config.html#matplotlib-hooks).
+224851 INFO: Selected matplotlib backends: ['Agg']
+224851 INFO: Extra dists for selected matplotlib backends: []
+225290 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+228873 INFO: Processing standard module hook 'hook-PySide6.QtOpenGL.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+229202 INFO: Performing binary vs. data reclassification (446 entries)
+229348 INFO: Looking for ctypes DLLs
+230188 INFO: Analyzing run-time hooks ...
+230198 INFO: Including run-time hook 'pyi_rth_inspect.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+230203 INFO: Including run-time hook 'pyi_rth_pkgutil.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+230208 INFO: Including run-time hook 'pyi_rth_multiprocessing.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+230215 INFO: Including run-time hook 'pyi_rth_mplconfig.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+230217 INFO: Processing pre-find-module-path hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_find_module_path'
+230219 INFO: Processing standard module hook 'hook-_pyi_rth_utils.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+230242 INFO: Including run-time hook 'pyi_rth_pyqtgraph_multiprocess.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\rthooks'
+230245 INFO: Including run-time hook 'pyi_rth_pyside6.py' from 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks'
+230320 INFO: Creating base_library.zip...
+230366 INFO: Looking for dynamic libraries
+231803 INFO: Extra DLL search directories (AddDllDirectory): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\shiboken6', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\numpy.libs', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin']
+231803 INFO: Extra DLL search directories (PATH): ['C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\cv2\\../../x64/vc17/bin', 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\PySide6']
+235741 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut32.vc9.dll'.
+235742 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle64.vc9.dll'.
+235743 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\freeglut64.vc9.dll'.
+235743 WARNING: Library not found: could not resolve 'MSVCR90.dll', dependency of 'C:\\Users\\RISHABH\\Desktop\\SIH_hackathon\\build\\venv\\Lib\\site-packages\\OpenGL\\DLLS\\gle32.vc9.dll'.
+235833 INFO: Warnings written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\warn-fsoc_onefile.txt
+236092 INFO: Graph cross-reference written to C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\xref-fsoc_onefile.html
+236186 INFO: checking PYZ
+236186 INFO: Building PYZ because PYZ-01.toc is non existent
+236186 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\PYZ-01.pyz
+238100 INFO: Building PYZ (ZlibArchive) C:\Users\RISHABH\Desktop\SIH_hackathon\build\work_onefile\fsoc_onefile\PYZ-01.pyz completed successfully.
+238166 INFO: checking PKG
+238166 INFO: Building PKG because PKG-01.toc is non existent
+238166 INFO: Building PKG (CArchive) FSOC_Simulator.pkg
+290508 INFO: Building PKG (CArchive) FSOC_Simulator.pkg completed successfully.
+290535 INFO: Bootloader C:\Users\RISHABH\Desktop\SIH_hackathon\build\venv\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\runw.exe
+290535 INFO: checking EXE
+290535 INFO: Building EXE because EXE-01.toc is non existent
+290535 INFO: Building EXE from EXE-01.toc
+290535 INFO: Copying bootloader EXE to C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator.exe
+290643 INFO: Copying icon to EXE
+290712 INFO: Copying 0 resources to EXE
+290712 INFO: Embedding manifest in EXE
+290799 INFO: Appending PKG archive to EXE
+290961 INFO: Fixing EXE headers
+291877 INFO: Building EXE from EXE-01.toc completed successfully.
+291891 INFO: Build complete! The results are available in: C:\Users\RISHABH\Desktop\SIH_hackathon\dist
 
-[onedir] built C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator  (255 MB) in 126 s
+[onedir] built C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator  (255 MB) in 179 s
 
-[onefile] built C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator.exe  (103 MB) in 91 s
+[onefile] built C:\Users\RISHABH\Desktop\SIH_hackathon\dist\FSOC_Simulator.exe  (103 MB) in 112 s

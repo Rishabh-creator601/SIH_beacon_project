@@ -63,7 +63,15 @@ class StateBadge(QtWidgets.QLabel):
 
 
 class CameraView(QtWidgets.QLabel):
-    """Shows a BGR numpy frame, scaled to fit while keeping its aspect ratio."""
+    """Shows a BGR numpy frame, scaled to fit while keeping its aspect ratio.
+
+    Zoom (1x - 8x, mouse wheel or set_zoom) crops a window around ``center``
+    - normally the tracked beacon - and shows it with crisp pixels, so the
+    blink, noise and detection boxes of a few-pixel target become visible.
+    """
+
+    zoomChanged = QtCore.Signal(int)
+    LEVELS = (1, 2, 4, 8)
 
     def __init__(self):
         super().__init__()
@@ -71,19 +79,46 @@ class CameraView(QtWidgets.QLabel):
         self.setMinimumSize(240, 180)
         self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.setStyleSheet(f"background: #05080c; border-radius: 6px;")
+        self.setToolTip("Mouse wheel: zoom (centred on the tracked beacon)")
         self._pix = None
+        self.zoom = 1
+        self._last = None
 
-    def show_frame(self, bgr):
+    def set_zoom(self, level):
+        self.zoom = min(max(int(level), 1), self.LEVELS[-1])
+        self.zoomChanged.emit(self.zoom)
+        if self._last is not None:
+            self.show_frame(*self._last)
+
+    def wheelEvent(self, e):
+        i = self.LEVELS.index(self.zoom) if self.zoom in self.LEVELS else 0
+        i = min(i + 1, len(self.LEVELS) - 1) if e.angleDelta().y() > 0 else max(i - 1, 0)
+        self.set_zoom(self.LEVELS[i])
+
+    def show_frame(self, bgr, center=None):
+        self._last = (bgr, center)
+        smooth = True
+        if self.zoom > 1:
+            h, w = bgr.shape[:2]
+            cw, ch = w // self.zoom, h // self.zoom
+            cx, cy = center if center is not None else (w / 2, h / 2)
+            x0 = int(min(max(cx - cw / 2, 0), w - cw))
+            y0 = int(min(max(cy - ch / 2, 0), h - ch))
+            bgr = cv2.resize(bgr[y0:y0 + ch, x0:x0 + cw], (w, h), interpolation=cv2.INTER_NEAREST)
+            cv2.putText(bgr, f"ZOOM {self.zoom}x", (10, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
+                        (255, 198, 56), 1, cv2.LINE_AA)
+            smooth = False
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
         h, w, _ = rgb.shape
         img = QtGui.QImage(rgb.data, w, h, 3 * w, QtGui.QImage.Format_RGB888).copy()
         self._pix = QtGui.QPixmap.fromImage(img)
+        self._smooth = smooth
         self._rescale()
 
     def _rescale(self):
         if self._pix is not None:
-            self.setPixmap(self._pix.scaled(self.size(), QtCore.Qt.KeepAspectRatio,
-                                            QtCore.Qt.SmoothTransformation))
+            mode = QtCore.Qt.SmoothTransformation if getattr(self, "_smooth", True) else QtCore.Qt.FastTransformation
+            self.setPixmap(self._pix.scaled(self.size(), QtCore.Qt.KeepAspectRatio, mode))
 
     def resizeEvent(self, e):
         super().resizeEvent(e)

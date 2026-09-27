@@ -21,7 +21,7 @@ randomize:
   beacon_paths: [lissajous, circular, random_walk]
   beacon_speed_dps: [0.8, 5.0]
   beacon_intensity: [190, 250]
-  decoys: [0, 5]                  # min / max number of decoys
+  decoys: [2, 5]                  # min / max number of decoys (at least 2; the app can fix it)
   decoy_intensity: [150, 240]
   decoy_speed_dps: [0.3, 4.0]
   decoy_blink_probability: 0.5    # others are steady lights

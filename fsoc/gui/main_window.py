@@ -57,6 +57,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.timer.setTimerType(QtCore.Qt.PreciseTimer)
         self.timer.timeout.connect(self._tick)
         self.new_run(new_seed=True)
+        self.setFocus()
 
     # ------------------------------------------------------------------ UI
     def _build_ui(self):
@@ -135,6 +136,18 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cb_method.addItem(name)
         l.addWidget(self.cb_method)
         row = QtWidgets.QHBoxLayout()
+        row.addWidget(QtWidgets.QLabel("Decoys"))
+        # Minimum is 2 decoys; the lowest spin value (1) stands for "random 2-5".
+        self.sp_decoys = QtWidgets.QSpinBox()
+        self.sp_decoys.setRange(1, 8)
+        self.sp_decoys.setValue(1)
+        self.sp_decoys.setSpecialValueText("random 2-5")
+        self.sp_decoys.setToolTip("Number of decoy lights in random scenes (at least 2).\n"
+                                  "Each decoy gets a random path and is steady or blinks at a wrong rate.\n"
+                                  "Applies on restart / new scene. Fixed scenarios keep their own decoys.")
+        row.addWidget(self.sp_decoys)
+        l.addLayout(row)
+        row = QtWidgets.QHBoxLayout()
         row.addWidget(QtWidgets.QLabel("Run length"))
         self.sp_duration = QtWidgets.QSpinBox()
         self.sp_duration.setRange(0, 3600)
@@ -206,11 +219,24 @@ class MainWindow(QtWidgets.QMainWindow):
         lab.setObjectName("viewTitle")
         head.addWidget(lab)
         head.addStretch(1)
+        self.zoom_buttons = {}
+        for level in CameraView.LEVELS:
+            b = QtWidgets.QPushButton("Fit" if level == 1 else f"{level}×")
+            b.setObjectName("toggle")
+            b.setCheckable(True)
+            b.setStyleSheet("padding: 3px 8px; font-size: 8pt;")
+            b.setToolTip("Zoom the camera feed around the tracked beacon (or use the mouse wheel)")
+            b.clicked.connect(lambda _=False, z=level: self.camera_view.set_zoom(z))
+            head.addWidget(b)
+            self.zoom_buttons[level] = b
+        l.addLayout(head)
         self.lbl_cam = QtWidgets.QLabel("")
         self.lbl_cam.setObjectName("subtitle")
-        head.addWidget(self.lbl_cam)
-        l.addLayout(head)
+        l.addWidget(self.lbl_cam)
         self.camera_view = CameraView()
+        self.camera_view.zoomChanged.connect(
+            lambda z: [b.setChecked(k == z) for k, b in self.zoom_buttons.items()])
+        self.zoom_buttons[1].setChecked(True)
         l.addWidget(self.camera_view, 1)
         legend = QtWidgets.QLabel(
             f"<span style='color:{theme.GOOD}'>■</span> beacon-like   "
@@ -243,7 +269,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.view3d = SceneView3D()
         self.view3d.setMinimumSize(300, 220)
         l.addWidget(self.view3d, 1)
-        hint = QtWidgets.QLabel("Drag to rotate  ·  wheel to zoom  ·  buttons above for preset views")
+        hint = QtWidgets.QLabel("Keys: A/D rotate · W/S tilt · Q/E zoom · V next view  (mouse: drag / wheel)"
+                                "  ·  H = all shortcuts")
         hint.setObjectName("subtitle")
         l.addWidget(hint)
         views.addWidget(f, 1)
@@ -300,11 +327,49 @@ class MainWindow(QtWidgets.QMainWindow):
         lay.addStretch(1)
         return w
 
+    SHORTCUTS = [
+        ("Space", "Start / pause"), ("R", "Restart the same scene"), ("N", "New random scene"),
+        ("T", "Show / hide true positions"), ("+  /  -", "Camera feed: zoom in / out"),
+        ("0", "Camera feed: fit (no zoom)"), ("W  /  S", "3D view: tilt up / down"),
+        ("A  /  D", "3D view: rotate left / right"), ("Q  /  E", "3D view: zoom in / out"),
+        ("V", "3D view: next preset view"), ("I", "Legend of the 3D view"), ("H  or  F1", "This help"),
+    ]
+
     def _shortcuts(self):
-        for key, fn in (("Space", self.toggle_run), ("R", lambda: self.new_run(new_seed=False)),
-                        ("N", lambda: self.new_run(new_seed=True)),
-                        ("T", lambda: self.ck_truth.setChecked(not self.ck_truth.isChecked()))):
-            QtGui.QShortcut(QtGui.QKeySequence(key), self, activated=fn)
+        """Everything can be driven from the keyboard (no mouse needed)."""
+        cam = lambda step: self.camera_view.set_zoom(
+            CameraView.LEVELS[min(max(CameraView.LEVELS.index(self.camera_view.zoom) + step, 0),
+                                  len(CameraView.LEVELS) - 1)])
+        keys = [
+            ("Space", self.toggle_run), ("R", lambda: self.new_run(new_seed=False)),
+            ("N", lambda: self.new_run(new_seed=True)),
+            ("T", lambda: self.ck_truth.setChecked(not self.ck_truth.isChecked())),
+            ("+", lambda: cam(+1)), ("=", lambda: cam(+1)), ("-", lambda: cam(-1)),
+            ("0", lambda: self.camera_view.set_zoom(1)),
+            ("A", lambda: self.view3d.orbit(-8, 0)), ("D", lambda: self.view3d.orbit(8, 0)),
+            ("W", lambda: self.view3d.orbit(0, 5)), ("S", lambda: self.view3d.orbit(0, -5)),
+            ("Q", lambda: self._zoom3d(0.85)), ("E", lambda: self._zoom3d(1.18)),
+            ("V", self._next_preset), ("I", self._show_legend),
+            ("H", self._show_help), ("F1", self._show_help),
+        ]
+        for key, fn in keys:
+            sc = QtGui.QShortcut(QtGui.QKeySequence(key), self, activated=fn)
+            sc.setContext(QtCore.Qt.ApplicationShortcut)
+
+    def _zoom3d(self, factor):
+        self.view3d.opts["distance"] = min(max(self.view3d.opts["distance"] * factor, 40), 700)
+        self.view3d.update()
+
+    def _next_preset(self):
+        names = list(SceneView3D.PRESETS)
+        self._preset_i = (getattr(self, "_preset_i", 0) + 1) % len(names)
+        self.view3d.set_preset(names[self._preset_i])
+        self.status.showMessage(f"3D view: {names[self._preset_i]}", 2000)
+
+    def _show_help(self):
+        rows = "".join(f"<tr><td style='color:{theme.ACCENT};font-family:Consolas;padding-right:18px'>{k}</td>"
+                       f"<td>{v}</td></tr>" for k, v in self.SHORTCUTS)
+        QtWidgets.QMessageBox.information(self, "Keyboard shortcuts", f"<table cellspacing=4>{rows}</table>")
 
     # ------------------------------------------------------------- runs
     def _build_config(self, new_seed):
@@ -329,6 +394,9 @@ class MainWindow(QtWidgets.QMainWindow):
         elif key == "random":
             cfg["simulation"]["seed"] = None
         cfg["identification"]["method"] = METHODS[self.cb_method.currentIndex()][1]
+        if key == "random" and self.sp_decoys.value() >= 2:
+            n = self.sp_decoys.value()
+            cfg["randomize"]["decoys"] = [n, n]
         cfg["simulation"]["duration"] = float(self.sp_duration.value())
         return cfg
 
@@ -351,8 +419,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._describe_scene()
         self.res = self.sim.step()
         self._draw(full=True)
-        self.status.showMessage(f"New run - seed {self.sim.seed}. Space: start/pause, R: restart, "
-                                f"N: new random scene, T: show true positions", 8000)
+        self.status.showMessage(f"New run - seed {self.sim.seed}.   Keyboard: Space start/pause · R restart · "
+                                f"N new scene · +/- zoom camera · WASD/QE move 3D view · H all shortcuts", 12000)
         if was_running:
             self.start()
 
@@ -408,7 +476,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def _draw(self, full=False):
         self._tick_n += 1
         res = self.res
-        self.camera_view.show_frame(self.overlay.draw(res, paused=not self.running))
+        self.camera_view.show_frame(self.overlay.draw(res, paused=not self.running), self._zoom_center(res))
         self.badge.set_state(res.track.state.value)
         self.lbl_cam.setText(f"{self.sim.camera.width}×{self.sim.camera.height}  ·  "
                              f"FOV {self.sim.camera.fov_x:.0f}°×{self.sim.camera.fov_y:.0f}°  ·  "
@@ -419,6 +487,13 @@ class MainWindow(QtWidgets.QMainWindow):
             self.plots.refresh()
         if full or self._tick_n % 5 == 0:
             self._update_cards()
+
+    def _zoom_center(self, res):
+        """Zoom centre: the tracker's estimate of the beacon, else the image centre."""
+        if res.track.estimate is None:
+            return None
+        x, y = self.sim.camera.world_to_pixel(res.track.estimate[0], res.track.estimate[1], res.pose)
+        return float(x), float(y)
 
     def _update_cards(self):
         live = self.sim.metrics.live()
@@ -481,7 +556,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.overlay.show_roi = self.ck_roi.isChecked()
         self.view3d.auto_orbit = self.ck_orbit.isChecked()
         if self.res is not None and not self.running:
-            self.camera_view.show_frame(self.overlay.draw(self.res, paused=True))
+            self.camera_view.show_frame(self.overlay.draw(self.res, paused=True), self._zoom_center(self.res))
 
     # ------------------------------------------------------------- reports
     def save_report(self):

@@ -62,9 +62,21 @@ Results are saved after every run, so an interrupted evaluation resumes where it
 - **3D situational view**: pan-tilt terminal, sky dome, field-of-view pyramid coloured
   by tracker state, search path, beacon trail, decoys, clouds (drag to rotate, wheel to zoom)
 - **Live plots** of pointing error and beacon score; **performance cards**
-- Controls: start / pause / restart, **new random scene**, scenario and identification
-  method, speed (0.5x to max), **live sliders** for turbulence, vibration and sensor noise,
-  report export. Keys: `Space` start/pause, `R` restart, `N` new random scene, `T` truth.
+- Controls: start / pause / restart, **new random scene**, scenario, identification
+  method, **number of decoys** (random 2-5 or fixed 2-8), speed (0.5x to max), **live sliders**
+  for turbulence, vibration and sensor noise, camera-feed **zoom** (Fit / 2x / 4x / 8x, centred
+  on the tracked beacon), legend popup (ⓘ), report export.
+
+**Keyboard (no mouse needed):**
+
+| Key | Action | Key | Action |
+|---|---|---|---|
+| `Space` | start / pause | `+` / `-` / `0` | camera zoom in / out / fit |
+| `R` | restart same scene | `A` / `D` | 3D view rotate |
+| `N` | new random scene | `W` / `S` | 3D view tilt |
+| `T` | show true positions | `Q` / `E` | 3D view zoom |
+| `I` | legend | `V` | next 3D preset view |
+| `H` / `F1` | list of shortcuts | | |
 
 ## Random scenes
 

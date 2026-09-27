@@ -86,7 +86,7 @@ def randomize_config(cfg, rng):
     targets = [beacon]
 
     # --- Decoys: random count, behaviour, brightness and path.
-    lo, hi = r.get("decoys", [0, 5])
+    lo, hi = r.get("decoys", [2, 5])
     n_decoys = int(rng.integers(lo, hi + 1))
     beacon_hz = float((beacon.get("blink") or {}).get("frequency_hz", 4.0))
     blinking = 0
