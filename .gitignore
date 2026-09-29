@@ -8,9 +8,7 @@ venv/
 
 
 # Packaging
-build/
-dist/
-*.spec
+
 
 # Editors / OS
 .vscode/

@@ -82,7 +82,7 @@ Results are saved after every run, so an interrupted evaluation resumes where it
 
 By default every run is a new random scene (`randomize` in `config/default.yaml`):
 random beacon path (lissajous / circular / random walk, random speed), a random number
-of decoys (0-5, steady or blinking at wrong rates), random turbulence, vibration and
+of decoys (2-5, steady or blinking at wrong rates), random turbulence, vibration and
 clouds, and a random initial pointing error (the camera starts aimed at the beacon's
 "reported" GPS/ephemeris position). The run's **seed** is shown in the app and saved
 in every report; enter it (or pass `--seed`) to replay the exact run.
@@ -116,7 +116,8 @@ followed across frames and scored with P(beacon):
 | `none` | Baseline: lock onto the brightest dot |
 
 Scores are accumulated as averaged log-odds (memory up to 3 s) before the tracker
-accepts (≥ 0.7) or rejects (≤ 0.3, then ignored for 6 s) a candidate.
+accepts (≥ 0.7) or rejects (≤ 0.2, with at least 24 clips of evidence; then ignored for 4 s) a candidate.
+A locked target whose score stays below 0.35 for 30 frames is dropped as a false lock.
 
 Retraining the CNN (optional; a trained model ships in `models/`):
 
