@@ -1,0 +1,39 @@
+# Everything at once: strong turbulence, vibration, clouds, dropouts,
+# frequent glints, sun glare and a faster target. Stress test.
+targets:
+  - name: beacon
+    is_beacon: true
+    intensity: 220
+    sigma_px: 2.0
+    blink: {frequency_hz: 4.0, duty: 0.7, off_level: 0.3}
+    trajectory:
+      type: random_walk
+      start: [8.0, 4.0]
+      speed: 5.0
+      turn_rate_std: 0.7
+      turn_tau_s: 1.5
+
+tracker:
+  process_noise: 10.0
+
+disturbances:
+  vibration:  {strength: 2.0}
+  turbulence: {strength: 2.0}
+  sensor:     {strength: 1.5}
+  clouds:
+    count: 8
+    optical_depth: [2.0, 5.0]
+  dropouts:
+    enabled: true
+    mean_interval_s: 12.0
+  glints:
+    rate_hz: 1.5
+  glare:
+    enabled: true
+    position_deg: [5.0, 8.0]
+
+# Fixed test case: no random scene, fixed seed (reproducible results).
+randomize:
+  enabled: false
+simulation:
+  seed: 42
