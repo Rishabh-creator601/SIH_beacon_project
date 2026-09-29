@@ -19,3 +19,4 @@
 [18/40] 05_fast_target         hybrid    seed  18  acquired=True  locked= 79.6%  (ETA 38 min)
 [19/40] 05_fast_target         hybrid    seed  19  acquired=True  locked= 28.8%  (ETA 36 min)
 [20/40] 05_fast_target         hybrid    seed  20  acquired=True  locked= 36.8%  (ETA 34 min)
+[21/40] 06_worst_case          hybrid    seed   1  acquired=True  locked=  1.8%  (ETA 33 min)

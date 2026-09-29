@@ -19,3 +19,4 @@
 [18/50] random                 none      seed  18  acquired=True  locked= 96.6%  (ETA 56 min)
 [19/50] random                 none      seed  19  acquired=False locked=  0.0%  (ETA 54 min)
 [20/50] random                 none      seed  20  acquired=True  locked= 98.8%  (ETA 52 min)
+[21/50] random                 none      seed  21  acquired=False locked=  0.0%  (ETA 50 min)
