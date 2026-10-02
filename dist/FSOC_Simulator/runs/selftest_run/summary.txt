@@ -1,26 +1,32 @@
 FSOC Coarse Tracking - Performance Report
 ============================================
-generated                     : 2026-10-02T14:54:15
-frames                        : 300
-simulation_duration_s         : 10.0
-wall_clock_duration_s         : 4.537
+generated                     : 2026-10-02T16:31:59
+frames                        : 600
+simulation_duration_s         : 20.0
+wall_clock_duration_s         : 12.702
 simulation_fps                : 30.0
-achieved_fps                  : 65.9
-mean_processing_ms            : 3.172
-max_processing_ms             : 11.267
-processing_throughput_fps     : 315.3
-mean_render_ms                : 11.302
-acquisition_time_s            : None
-acquired                      : False
+achieved_fps                  : 47.16
+mean_processing_ms            : 5.994
+max_processing_ms             : 12.7
+processing_throughput_fps     : 166.8
+mean_render_ms                : 14.645
+acquisition_time_s            : 2.067
+acquired                      : True
 lock_losses                   : 0
 false_lock_frames             : 0
-beacon_in_fov_pct             : 0.0
-beacon_occluded_pct           : 46.33
-time_locked_pct               : 0.0
-lock_retention_pct            : 0.0
-lock_retention_unoccluded_pct : 0.0
+beacon_in_fov_pct             : 97.33
+beacon_occluded_pct           : 52.33
+time_locked_pct               : 89.67
+lock_retention_pct            : 100.0
+lock_retention_unoccluded_pct : 100.0
+tracking_error_mean_px        : 4.66
+tracking_error_rms_px         : 5.454
+tracking_error_max_px         : 12.52
+tracking_error_mean_mrad      : 1.0166
+tracking_error_max_mrad       : 2.7315
+handover_ready_pct_of_locked  : 97.96
 seed                          : 8
-random_scene                  : {'beacon_path': 'lissajous', 'beacon_speed_dps': 1.51, 'decoys': 4, 'blinking_decoys': 3, 'initial_pointing_error_deg': 7.46, 'camera_start_deg': [-17.5, -9.5], 'camera_to_prior_deg': 13.1, 'turbulence_strength': 0.85, 'vibration_strength': 1.9, 'clouds': True}
+random_scene                  : {'beacon_path': 'random_walk', 'beacon_speed_dps': 1.51, 'decoys': 5, 'blinking_decoys': 4, 'initial_pointing_error_deg': 3.58, 'camera_start_deg': [0.0, 0.0], 'beacon_distance': 0.25, 'camera_to_prior_deg': 9.5, 'turbulence_strength': 0.6, 'vibration_strength': 0.43, 'clouds': True}
 identification_method         : hybrid
-candidates_rejected           : 2
+candidates_rejected           : 0
 locks_dropped_by_identity     : 0

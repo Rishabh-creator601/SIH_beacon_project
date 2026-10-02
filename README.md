@@ -34,14 +34,18 @@ Build inside a minimal virtual environment so only what the app needs is bundled
 
 ```bash
 python -m venv build/venv
-buildenv\Scripts\python -m pip install numpy opencv-python-headless PyYAML PySide6-Essentials pyqtgraph PyOpenGL matplotlib reportlab pyinstaller
-buildenv\Scripts\python tools/build_exe.py            # builds both variants into dist/
+build\venv\Scripts\python -m pip install numpy opencv-python-headless PyYAML PySide6-Essentials pyqtgraph PyOpenGL matplotlib reportlab pyinstaller
+build\venv\Scripts\python tools/build_exe.py --mode both   # builds both variants into dist/
 ```
 
 | Variant | Path | Notes |
 |---|---|---|
-| Folder (fast start) | `dist/FSOC_Simulator/FSOC_Simulator.exe` | Opens in a few seconds; share the folder as a zip |
-| Single file | `dist/FSOC_Simulator.exe` | One file; unpacks itself on every start, so it opens more slowly |
+| Folder (fast start) | `dist/FSOC_Simulator/FSOC_Simulator.exe` | About 245 MB folder; opens in a few seconds; share the folder as a zip |
+| Single file | `dist/FSOC_Simulator.exe` | About 103 MB; one file; unpacks itself on every start, so it opens more slowly |
+
+`--mode onedir` or `--mode onefile` builds just one variant. Both variants contain the full
+current app: camera starting at the sky centre, random-walk beacon moving in front of and behind
+clouds, 3D / 2D / both views, disturbance cues and the ⓘ window, apply & continue / restart.
 
 Both open only the application window (no console). Reports go to a `runs` folder next to the .exe.
 Check a build without opening the GUI: `FSOC_Simulator.exe --selftest 20` then read `runs/selftest.txt`.
