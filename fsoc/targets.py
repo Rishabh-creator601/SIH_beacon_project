@@ -176,6 +176,19 @@ class Target:
         self.is_beacon = bool(cfg.get("is_beacon", False))
         self.intensity = float(cfg.get("intensity", 200))
         self.sigma_px = float(cfg.get("sigma_px", 2.0))
+        # Relative distance from the camera: 0 = at the camera, 1 = as far as
+        # the stars. Clouds only dim targets that are behind them.
+        self.distance = float(cfg.get("distance", 0.9))
+        # Optional random drift in depth, so a target can pass in front of and
+        # behind clouds: the distance rate is a Gauss-Markov process (sigma
+        # `speed` per second, correlation `tau_s`), reflected at `range`.
+        dw = cfg.get("distance_walk") or {}
+        self._dwalk = None
+        if dw:
+            self._dwalk = (float(dw.get("speed", 0.03)), float(dw.get("tau_s", 5.0)),
+                           tuple(dw.get("range", [0.12, 0.97])))
+            self._drng = np.random.default_rng(int(rng.integers(2 ** 32)))
+            self._drate = 0.0
         traj_cfg = cfg.get("trajectory", {"type": "static"})
         kind = traj_cfg.get("type", "static")
         if kind not in TRAJECTORIES:
@@ -199,6 +212,15 @@ class Target:
             on = cycle < self.blink_duty
             self.current_intensity = self.intensity * (1.0 if on else self.blink_off_level)
         az, el = self.trajectory.step(t, dt)
+        if self._dwalk and dt > 0:
+            sigma, tau, (lo, hi) = self._dwalk
+            a = np.exp(-dt / tau)
+            self._drate = a * self._drate + np.sqrt(1 - a * a) * sigma * self._drng.standard_normal()
+            d = self.distance + self._drate * dt
+            if d < lo or d > hi:                       # reflect at the limits
+                d = 2 * lo - d if d < lo else 2 * hi - d
+                self._drate = -self._drate
+            self.distance = float(d)
         if dt > 0:
             self.vaz = (az - self.az) / dt
             self.vel = (el - self.el) / dt

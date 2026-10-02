@@ -82,7 +82,10 @@ def _run_info(s):
                  ("Decoys", f"{scene['decoys']} ({scene['blinking_decoys']} blinking)"),
                  ("Turbulence / vibration", f"{scene['turbulence_strength']} / {scene['vibration_strength']}"),
                  ("Clouds", "yes" if scene["clouds"] else "no"),
-                 ("Initial pointing error", f"{scene['initial_pointing_error_deg']} deg")]
+                 ("Reported-position error (GPS prior)", f"{scene['initial_pointing_error_deg']} deg")]
+        if "camera_start_deg" in scene:
+            info.append(("Camera start", f"az {scene['camera_start_deg'][0]}, el {scene['camera_start_deg'][1]} deg "
+                                         f"({scene['camera_to_prior_deg']} deg from the reported position)"))
     else:
         info.append(("Scene", "fixed scenario"))
     return info

@@ -24,6 +24,8 @@ from ..config import PROJECT_ROOT, load_config
 from ..simulation import Simulation
 from ..visualization import Overlay
 from . import theme
+from .disturb_info import DisturbanceInfo
+from .view2d import SkyMap2D
 from .view3d import SceneView3D
 from .widgets import CameraView, LabeledSlider, Legend, LivePlots, StatCard, StateBadge, panel
 
@@ -32,6 +34,11 @@ SCENARIOS = [("Random scene", "random"), ("Default (fixed)", "default")] + [
 SPEEDS = [("0.5x", 0.5), ("1x  real time", 1.0), ("2x", 2.0), ("4x", 4.0), ("Max", 0.0)]
 METHODS = [("Hybrid  (CNN + blink)", "hybrid"), ("CNN only", "cnn"), ("Blink test only", "blink"),
            ("None  (brightest dot)", "none")]
+# Simulated sky: (label, (az_min, az_max, el_min, el_max)) in degrees.
+SKY_AREAS = [("Standard  (az ±30°, el ±20°)", (-30.0, 30.0, -20.0, 20.0)),
+             ("Wide  (az ±60°, el ±30°)", (-60.0, 60.0, -30.0, 30.0))]
+VIEW_MODES = ("3D", "2D", "Both")
+DISTURBANCES = ("turbulence", "vibration", "sensor")
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -42,7 +49,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # excluded) so the window works from 1366x768 laptops to large monitors.
         screen = QtGui.QGuiApplication.primaryScreen().availableGeometry()
         self.compact = screen.width() < 1600 or screen.height() < 900
-        self.side_w = 250 if self.compact else 290
+        self.side_w = 262 if self.compact else 290
         self.stats_w = 230 if self.compact else 270
         self.setMinimumSize(min(1100, screen.width()), min(640, screen.height()))
         self.setGeometry(screen)
@@ -51,6 +58,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.running = False
         self.speed = 1.0
         self._tick_n = 0
+        self._seed = None             # seed of the current scene (kept for restarts, not shown)
+        self._dist_override = None    # disturbance levels the user applied, kept across restarts
         self._build_ui()
         self._shortcuts()
         self.timer = QtCore.QTimer(self)
@@ -98,7 +107,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btn_run.setMinimumWidth(110)
         self.btn_run.clicked.connect(self.toggle_run)
         self.btn_restart = QtWidgets.QPushButton("⟲  Restart")
-        self.btn_restart.setToolTip("Restart the same scene (same seed)  [R]")
+        self.btn_restart.setToolTip("Restart the same scene from the beginning  [R]")
         self.btn_restart.clicked.connect(lambda: self.new_run(new_seed=False))
         self.btn_new = QtWidgets.QPushButton("🎲  New random scene")
         self.btn_new.setToolTip("New random beacon path, decoys and turbulence  [N]")
@@ -111,6 +120,7 @@ class MainWindow(QtWidgets.QMainWindow):
         scroll = QtWidgets.QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFixedWidth(self.side_w)
+        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         box = QtWidgets.QWidget()
         lay = QtWidgets.QVBoxLayout(box)
         lay.setContentsMargins(0, 0, 4, 0)
@@ -123,29 +133,35 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cb_scenario.setToolTip("Random scene: new beacon path, decoy count and turbulence each run.\n"
                                     "The numbered scenarios are fixed, reproducible test cases.")
         l.addWidget(self.cb_scenario)
-        row = QtWidgets.QHBoxLayout()
-        row.addWidget(QtWidgets.QLabel("Seed"))
-        self.ed_seed = QtWidgets.QLineEdit()
-        self.ed_seed.setPlaceholderText("random")
-        self.ed_seed.setToolTip("Type a seed to replay an exact run (the seed is in every report)")
-        row.addWidget(self.ed_seed)
-        l.addLayout(row)
+        # A different scenario brings its own disturbance levels.
+        self.cb_scenario.currentIndexChanged.connect(lambda _: setattr(self, "_dist_override", None))
+        l.addWidget(QtWidgets.QLabel("Sky area"))
+        self.cb_sky = QtWidgets.QComboBox()
+        for name, _ in SKY_AREAS:
+            self.cb_sky.addItem(name)
+        self.cb_sky.setToolTip("Size of the simulated sky the beacon and decoys move in.\n"
+                               "Applies on restart / new scene.")
+        l.addWidget(self.cb_sky)
         l.addWidget(QtWidgets.QLabel("Beacon identification"))
         self.cb_method = QtWidgets.QComboBox()
         for name, _ in METHODS:
             self.cb_method.addItem(name)
         l.addWidget(self.cb_method)
+        # Decoy count range (random scenes): each new scene draws a count in [from, to].
         row = QtWidgets.QHBoxLayout()
         row.addWidget(QtWidgets.QLabel("Decoys"))
-        # Minimum is 2 decoys; the lowest spin value (1) stands for "random 2-5".
-        self.sp_decoys = QtWidgets.QSpinBox()
-        self.sp_decoys.setRange(1, 8)
-        self.sp_decoys.setValue(1)
-        self.sp_decoys.setSpecialValueText("random 2-5")
-        self.sp_decoys.setToolTip("Number of decoy lights in random scenes (at least 2).\n"
-                                  "Each decoy gets a random path and is steady or blinks at a wrong rate.\n"
-                                  "Applies on restart / new scene. Fixed scenarios keep their own decoys.")
-        row.addWidget(self.sp_decoys)
+        self.sp_dec_lo, self.sp_dec_hi = QtWidgets.QSpinBox(), QtWidgets.QSpinBox()
+        for i, (sp, v) in enumerate(((self.sp_dec_lo, 2), (self.sp_dec_hi, 5))):
+            sp.setRange(2, 8)
+            sp.setValue(v)
+            sp.setToolTip("Number of decoy lights in random scenes: a random count in this range\n"
+                          "(set both equal for a fixed count; at least 2). Each decoy gets a random path and\n"
+                          "is steady or blinks at a wrong rate. Applies on restart / new scene.")
+            if i:
+                row.addWidget(QtWidgets.QLabel("to"))
+            row.addWidget(sp, 1)
+        self.sp_dec_lo.valueChanged.connect(lambda v: self.sp_dec_hi.setValue(max(v, self.sp_dec_hi.value())))
+        self.sp_dec_hi.valueChanged.connect(lambda v: self.sp_dec_lo.setValue(min(v, self.sp_dec_lo.value())))
         l.addLayout(row)
         row = QtWidgets.QHBoxLayout()
         row.addWidget(QtWidgets.QLabel("Run length"))
@@ -170,24 +186,47 @@ class MainWindow(QtWidgets.QMainWindow):
         l.addWidget(self.cb_speed)
         lay.addWidget(f)
 
-        f, l = panel("Disturbances  (live)")
+        f, l = panel()
+        head = QtWidgets.QHBoxLayout()
+        lab = QtWidgets.QLabel("DISTURBANCES")
+        lab.setObjectName("section")
+        head.addWidget(lab)
+        head.addStretch(1)
+        b = QtWidgets.QPushButton("ⓘ")
+        b.setToolTip("What each disturbance is and what it does, pictured at the current levels  [F2]")
+        b.setStyleSheet("padding: 0px 7px; font-size: 10pt; font-weight: 700;")
+        b.clicked.connect(self._show_disturbance_info)
+        head.addWidget(b)
+        l.addLayout(head)
         self.sl_turb = LabeledSlider("Atmospheric turbulence", 0, 3, 1.0,
                                      tooltip="Scintillation (twinkle), beam wander, blur and heat shimmer")
         self.sl_vib = LabeledSlider("Platform vibration", 0, 3, 1.0, tooltip="Line-of-sight jitter of the gimbal")
         self.sl_noise = LabeledSlider("Sensor noise", 0, 3, 1.0, tooltip="Shot / read noise and pixel hits")
-        for s, name in ((self.sl_turb, "turbulence"), (self.sl_vib, "vibration"), (self.sl_noise, "sensor")):
-            s.valueChanged.connect(lambda v, n=name: self.sim and self.sim.disturb.set_strength(n, v))
+        self.dist_sliders = dict(zip(DISTURBANCES, (self.sl_turb, self.sl_vib, self.sl_noise)))
+        for s in self.dist_sliders.values():
+            s.valueChanged.connect(lambda _v: self._set_pending(True))
             l.addWidget(s)
+        self.lbl_pending = QtWidgets.QLabel(f"<span style='color:{theme.WARN}'>●</span> changed - not applied yet")
+        self.lbl_pending.setObjectName("subtitle")
+        self.lbl_pending.setVisible(False)
+        l.addWidget(self.lbl_pending)
+        b = QtWidgets.QPushButton("▶  Apply && continue")
+        b.setToolTip("Apply the new levels now; the run continues from the current moment  [C]")
+        b.clicked.connect(lambda: self.apply_disturbances(restart=False))
+        l.addWidget(b)
+        b = QtWidgets.QPushButton("⟲  Apply && restart")
+        b.setToolTip("Restart the same scene from the beginning with the new levels  [Shift+R]")
+        b.clicked.connect(lambda: self.apply_disturbances(restart=True))
+        l.addWidget(b)
         lay.addWidget(f)
 
         f, l = panel("Display")
-        self.ck_truth = QtWidgets.QCheckBox("Show true positions  [T]")
         self.ck_scores = QtWidgets.QCheckBox("Show beacon scores")
         self.ck_scores.setChecked(True)
         self.ck_roi = QtWidgets.QCheckBox("Show tracking window (ROI)")
         self.ck_roi.setChecked(True)
         self.ck_orbit = QtWidgets.QCheckBox("Auto-rotate 3D view")
-        for c in (self.ck_truth, self.ck_scores, self.ck_roi, self.ck_orbit):
+        for c in (self.ck_scores, self.ck_roi, self.ck_orbit):
             c.toggled.connect(self._display_changed)
             l.addWidget(c)
         lay.addWidget(f)
@@ -204,6 +243,12 @@ class MainWindow(QtWidgets.QMainWindow):
         l.addWidget(hint)
         lay.addWidget(f)
         lay.addStretch(1)
+        # Long list entries must not widen the fixed-width panel (they are elided instead).
+        for cb in box.findChildren(QtWidgets.QComboBox):
+            cb.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToMinimumContentsLengthWithIcon)
+            cb.setMinimumContentsLength(6)
+        for sp in box.findChildren(QtWidgets.QSpinBox):
+            sp.setMinimumWidth(0)
         scroll.setWidget(box)
         return scroll
 
@@ -251,29 +296,45 @@ class MainWindow(QtWidgets.QMainWindow):
 
         f, l = panel()
         head = QtWidgets.QHBoxLayout()
-        lab = QtWidgets.QLabel("3D SITUATIONAL VIEW")
+        lab = QtWidgets.QLabel("SITUATIONAL VIEW")
         lab.setObjectName("viewTitle")
         head.addWidget(lab)
+        self.mode_buttons = {}
+        for mode in VIEW_MODES:
+            b = QtWidgets.QPushButton(mode)
+            b.setObjectName("toggle")
+            b.setCheckable(True)
+            b.setStyleSheet("padding: 3px 9px; font-size: 8pt;")
+            b.setToolTip("3D view, 2D sky map, or both  [M]")
+            b.clicked.connect(lambda _=False, m=mode: self.set_view_mode(m))
+            head.addWidget(b)
+            self.mode_buttons[mode] = b
         head.addStretch(1)
         self.btn_info = QtWidgets.QPushButton("ⓘ")
-        self.btn_info.setToolTip("What do the symbols in the 3D view mean?")
+        self.btn_info.setToolTip("What do the symbols in the views mean?  [I]")
         self.btn_info.setStyleSheet("padding: 2px 9px; font-size: 11pt; font-weight: 700;")
         self.btn_info.clicked.connect(self._show_legend)
         head.addWidget(self.btn_info)
+        self.preset_buttons = []
         for name in SceneView3D.PRESETS:
             b = QtWidgets.QPushButton(name)
             b.setStyleSheet("padding: 3px 9px; font-size: 8pt;")
+            b.setToolTip("3D camera preset  [V]")
             b.clicked.connect(lambda _=False, n=name: self.view3d.set_preset(n))
             head.addWidget(b)
+            self.preset_buttons.append(b)
         l.addLayout(head)
         self.view3d = SceneView3D()
-        self.view3d.setMinimumSize(300, 220)
+        self.view3d.setMinimumSize(300, 150)
         l.addWidget(self.view3d, 1)
-        hint = QtWidgets.QLabel("Keys: A/D rotate · W/S tilt · Q/E zoom · V next view  (mouse: drag / wheel)"
-                                "  ·  H = all shortcuts")
-        hint.setObjectName("subtitle")
-        l.addWidget(hint)
+        self.view2d = SkyMap2D()
+        self.view2d.setMinimumSize(300, 150)
+        l.addWidget(self.view2d, 1)
+        self.view_hint = QtWidgets.QLabel()
+        self.view_hint.setObjectName("subtitle")
+        l.addWidget(self.view_hint)
         views.addWidget(f, 1)
+        self.set_view_mode("3D")
 
         # Legend of the 3D view's symbols.
         states = "  ".join(f"<span style='color:{c}'>{s.title()}</span>" for s, c in theme.STATE_COLORS.items())
@@ -286,8 +347,14 @@ class MainWindow(QtWidgets.QMainWindow):
                                                      + states),
             ("━", theme.ACCENT, "Line of sight / search path", "where the camera points now, and where it has looked"),
             ("●", theme.ESTIMATE, "Tracker estimate", "where the Kalman filter believes the beacon is"),
-            ("◯", "#c7d3e6", "Cloud", "blocks or dims the beacon while it passes"),
-            ("▢", theme.ACCENT, "Simulated sky", "the region the beacon and decoys move in (az ±30°, el ±20°)"),
+            ("◯", "#c7d3e6", "Cloud", "dims or hides the beacon only when the beacon is BEHIND it; "
+                                      "the beacon drifts in depth, in front of and behind clouds"),
+            ("·", "#c8d4ff", "Stars", "background clutter, always farthest away (3D: on the far dome)"),
+            ("○", "#7fc8ff", "Turbulence (3D)", "faint shimmering air pockets along the line of sight; "
+                                                "more and brighter = stronger turbulence"),
+            ("✦", "#ffffff", "Sensor noise (3D)", "sparkles flickering in the camera footprint; more = noisier"),
+            ("▲", "#9fb7d6", "Vibration (3D)", "the camera head shakes with the real jitter, shown 60x larger"),
+            ("▢", theme.ACCENT, "Simulated sky", "the region the beacon and decoys move in (see Sky area)"),
         ])
         # Shown as a popup from the ⓘ button (closes on any click outside it).
         self.legend.setParent(self, QtCore.Qt.Popup)
@@ -305,6 +372,7 @@ class MainWindow(QtWidgets.QMainWindow):
         w = QtWidgets.QScrollArea()
         w.setWidgetResizable(True)
         w.setFixedWidth(self.stats_w)
+        w.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         inner = QtWidgets.QWidget()
         w.setWidget(inner)
         lay = QtWidgets.QVBoxLayout(inner)
@@ -329,10 +397,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
     SHORTCUTS = [
         ("Space", "Start / pause"), ("R", "Restart the same scene"), ("N", "New random scene"),
-        ("T", "Show / hide true positions"), ("+  /  -", "Camera feed: zoom in / out"),
-        ("0", "Camera feed: fit (no zoom)"), ("W  /  S", "3D view: tilt up / down"),
+        ("C", "Disturbances: apply and continue"), ("Shift + R", "Disturbances: apply and restart"),
+        ("+  /  -", "Camera feed: zoom in / out"), ("0", "Camera feed: fit (no zoom)"),
+        ("M", "Situational view: 3D / 2D / both"), ("W  /  S", "3D view: tilt up / down"),
         ("A  /  D", "3D view: rotate left / right"), ("Q  /  E", "3D view: zoom in / out"),
-        ("V", "3D view: next preset view"), ("I", "Legend of the 3D view"), ("H  or  F1", "This help"),
+        ("V", "3D view: next preset view"), ("I", "Legend of the views"),
+        ("F2", "Disturbances explained (pictures at current levels)"), ("H  or  F1", "This help"),
+        ("Tab", "Move between controls (arrows change a slider / list)"),
     ]
 
     def _shortcuts(self):
@@ -343,13 +414,15 @@ class MainWindow(QtWidgets.QMainWindow):
         keys = [
             ("Space", self.toggle_run), ("R", lambda: self.new_run(new_seed=False)),
             ("N", lambda: self.new_run(new_seed=True)),
-            ("T", lambda: self.ck_truth.setChecked(not self.ck_truth.isChecked())),
+            ("C", lambda: self.apply_disturbances(restart=False)),
+            ("Shift+R", lambda: self.apply_disturbances(restart=True)),
+            ("M", lambda: self.set_view_mode(VIEW_MODES[(VIEW_MODES.index(self.view_mode) + 1) % len(VIEW_MODES)])),
             ("+", lambda: cam(+1)), ("=", lambda: cam(+1)), ("-", lambda: cam(-1)),
             ("0", lambda: self.camera_view.set_zoom(1)),
             ("A", lambda: self.view3d.orbit(-8, 0)), ("D", lambda: self.view3d.orbit(8, 0)),
             ("W", lambda: self.view3d.orbit(0, 5)), ("S", lambda: self.view3d.orbit(0, -5)),
             ("Q", lambda: self._zoom3d(0.85)), ("E", lambda: self._zoom3d(1.18)),
-            ("V", self._next_preset), ("I", self._show_legend),
+            ("V", self._next_preset), ("I", self._show_legend), ("F2", self._show_disturbance_info),
             ("H", self._show_help), ("F1", self._show_help),
         ]
         for key, fn in keys:
@@ -365,6 +438,31 @@ class MainWindow(QtWidgets.QMainWindow):
         self._preset_i = (getattr(self, "_preset_i", 0) + 1) % len(names)
         self.view3d.set_preset(names[self._preset_i])
         self.status.showMessage(f"3D view: {names[self._preset_i]}", 2000)
+
+    def set_view_mode(self, mode):
+        """Situational view: the 3D scene, the 2D sky map, or both stacked."""
+        self.view_mode = mode
+        self.view3d.setVisible(mode in ("3D", "Both"))
+        self.view2d.setVisible(mode in ("2D", "Both"))
+        for m, b in self.mode_buttons.items():
+            b.setChecked(m == mode)
+        for b in self.preset_buttons:
+            b.setVisible(mode != "2D")
+        self.view_hint.setText(
+            "2D sky map: azimuth / elevation, seen face-on  ·  M = switch view  ·  H = all shortcuts" if mode == "2D"
+            else "Keys: A/D rotate · W/S tilt · Q/E zoom · V preset · M switch view  (mouse: drag / wheel)"
+                 "  ·  H = all shortcuts")
+        if self.res is not None:
+            self.view2d.update_scene(self.res, draw=True) if mode != "3D" else None
+
+    def _show_disturbance_info(self):
+        """Explain the disturbances, pictured at the current slider levels."""
+        if not hasattr(self, "dist_info"):
+            self.dist_info = DisturbanceInfo(self)
+        self.dist_info.refresh({name: s.value() for name, s in self.dist_sliders.items()})
+        self.dist_info.show()
+        self.dist_info.raise_()
+        self.dist_info.activateWindow()
 
     def _show_help(self):
         rows = "".join(f"<tr><td style='color:{theme.ACCENT};font-family:Consolas;padding-right:18px'>{k}</td>"
@@ -382,47 +480,68 @@ class MainWindow(QtWidgets.QMainWindow):
             cfg["simulation"]["seed"] = 42
         else:
             cfg = load_config(key)
-        text = self.ed_seed.text().strip()
-        if new_seed and key == "random":
-            self.ed_seed.clear()
-            text = ""
-        if text:
-            try:
-                cfg["simulation"]["seed"] = int(text)
-            except ValueError:
-                self.status.showMessage("Seed must be a whole number - using a random one", 5000)
-        elif key == "random":
-            cfg["simulation"]["seed"] = None
+        # Random scene: a new seed for a new scene, the same seed for a restart
+        # (the seed is kept internally and written to the reports, not shown).
+        if key == "random":
+            cfg["simulation"]["seed"] = None if (new_seed or self._seed is None) else self._seed
         cfg["identification"]["method"] = METHODS[self.cb_method.currentIndex()][1]
-        if key == "random" and self.sp_decoys.value() >= 2:
-            n = self.sp_decoys.value()
-            cfg["randomize"]["decoys"] = [n, n]
+        if key == "random":
+            cfg["randomize"]["decoys"] = [self.sp_dec_lo.value(), self.sp_dec_hi.value()]
+        # Sky area; the star count scales with it so the star density stays the same.
+        w = cfg["world"]
+        old_area = (w["az_range"][1] - w["az_range"][0]) * (w["el_range"][1] - w["el_range"][0])
+        a0, a1, e0, e1 = SKY_AREAS[self.cb_sky.currentIndex()][1]
+        w["az_range"], w["el_range"] = [a0, a1], [e0, e1]
+        w["num_stars"] = int(round(w.get("num_stars", 0) * (a1 - a0) * (e1 - e0) / old_area))
         cfg["simulation"]["duration"] = float(self.sp_duration.value())
         return cfg
 
     def new_run(self, new_seed):
         was_running = self.running or self.sim is None
         self.pause()
+        if new_seed:
+            self._dist_override = None          # a new scene brings its own disturbance levels
         cfg = self._build_config(new_seed)
         self.sim = Simulation(cfg)
-        if SCENARIOS[self.cb_scenario.currentIndex()][1] == "random":
-            self.ed_seed.setText(str(self.sim.seed))
+        self._seed = self.sim.seed
+        for name, v in (self._dist_override or {}).items():
+            self.sim.disturb.set_strength(name, v)
         self.overlay = Overlay(self.sim)
         self.overlay.show_hud = self.overlay.show_minimap = False
         self._display_changed()
-        for s, name in ((self.sl_turb, "turbulence"), (self.sl_vib, "vibration"), (self.sl_noise, "sensor")):
+        for name, s in self.dist_sliders.items():
             s.set_value(self.sim.disturb.strength(name), emit=False)
+        self._set_pending(False)
         self.view3d.bind_sim(self.sim)
+        self.view2d.bind_sim(self.sim)
         self.plots.clear()
         tr = self.sim.tracker
         self.plots.set_thresholds(self.sim.metrics.handover_px, tr.accept, tr.reject)
         self._describe_scene()
         self.res = self.sim.step()
         self._draw(full=True)
-        self.status.showMessage(f"New run - seed {self.sim.seed}.   Keyboard: Space start/pause · R restart · "
-                                f"N new scene · +/- zoom camera · WASD/QE move 3D view · H all shortcuts", 12000)
+        self.status.showMessage("New run.   Keyboard: Space start/pause · R restart · N new scene · "
+                                "C / Shift+R apply disturbances · +/- zoom camera · M 2D/3D · H all shortcuts", 12000)
         if was_running:
             self.start()
+
+    def _set_pending(self, pending):
+        self.lbl_pending.setVisible(pending)
+
+    def apply_disturbances(self, restart):
+        """Apply the slider levels: from the current moment (continue) or from
+        the start of the same scene (restart). The levels are kept for later
+        restarts of this scene; a new scene brings its own."""
+        self._dist_override = {name: s.value() for name, s in self.dist_sliders.items()}
+        if restart:
+            self.new_run(new_seed=False)
+            self.status.showMessage("Disturbances applied - scene restarted from the beginning", 6000)
+            return
+        for name, v in self._dist_override.items():
+            self.sim.disturb.set_strength(name, v)
+        self._set_pending(False)
+        self._describe_scene()
+        self.status.showMessage(f"Disturbances applied at t = {self.res.t:.1f} s - the run continues", 6000)
 
     def start(self):
         if self.sim is None or self.sim.finished:
@@ -483,6 +602,7 @@ class MainWindow(QtWidgets.QMainWindow):
                              f"az {res.pose[0]:+6.2f}°  el {res.pose[1]:+6.2f}°")
         if full or self._tick_n % 2 == 0:
             self.view3d.update_scene(res)
+            self.view2d.update_scene(res, draw=self.view_mode != "3D")
         if full or self._tick_n % 3 == 0:
             self.plots.refresh()
         if full or self._tick_n % 5 == 0:
@@ -531,17 +651,22 @@ class MainWindow(QtWidgets.QMainWindow):
     def _describe_scene(self):
         s = self.sim
         i = s.scene_info
-        rows = [("Seed", str(s.seed))]
+        a0, a1, e0, e1 = s.scene.bounds
+        rows = [("Sky area", f"az ±{a1:.0f}°, el ±{e1:.0f}°")]
         if i:
             rows += [("Beacon path", f"{i['beacon_path'].replace('_', ' ')}, {i['beacon_speed_dps']} °/s"),
-                     ("Decoys", f"{i['decoys']}  ({i['blinking_decoys']} blinking)"),
-                     ("Turbulence", f"{i['turbulence_strength']:.2f}"),
-                     ("Vibration", f"{i['vibration_strength']:.2f}"),
-                     ("Clouds", "yes" if i["clouds"] else "no"),
-                     ("Pointing error", f"{i['initial_pointing_error_deg']:.1f}°  (GPS prior)")]
+                     ("Decoys", f"{i['decoys']}  ({i['blinking_decoys']} blinking)")]
         else:
             n = len(s.scene.targets) - 1
             rows += [("Scene", SCENARIOS[self.cb_scenario.currentIndex()][0]), ("Decoys", str(n))]
+        rows += [("Turbulence", f"{s.disturb.strength('turbulence'):.2f}"),
+                 ("Vibration", f"{s.disturb.strength('vibration'):.2f}"),
+                 ("Sensor noise", f"{s.disturb.strength('sensor'):.2f}")]
+        if i:
+            rows += [("Clouds", "yes" if i["clouds"] else "no"),
+                     ("GPS error", f"{i['initial_pointing_error_deg']:.1f}°  (reported vs true)")]
+            if "camera_to_prior_deg" in i:
+                rows.append(("Camera start", f"{i['camera_to_prior_deg']:.0f}° from reported position"))
         b = s.scene.beacon
         rows.append(("Beacon code", f"{b.blink_hz:.1f} Hz blink"))
         self.lbl_scene.setText("<table cellspacing=3>" + "".join(
@@ -551,7 +676,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def _display_changed(self):
         if not hasattr(self, "overlay"):
             return
-        self.overlay.show_truth = self.ck_truth.isChecked()
+        self.overlay.show_truth = False
         self.overlay.show_scores = self.ck_scores.isChecked()
         self.overlay.show_roi = self.ck_roi.isChecked()
         self.view3d.auto_orbit = self.ck_orbit.isChecked()

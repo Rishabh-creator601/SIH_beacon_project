@@ -1,0 +1,26 @@
+FSOC Coarse Tracking - Performance Report
+============================================
+generated                     : 2026-10-02T14:54:15
+frames                        : 300
+simulation_duration_s         : 10.0
+wall_clock_duration_s         : 4.537
+simulation_fps                : 30.0
+achieved_fps                  : 65.9
+mean_processing_ms            : 3.172
+max_processing_ms             : 11.267
+processing_throughput_fps     : 315.3
+mean_render_ms                : 11.302
+acquisition_time_s            : None
+acquired                      : False
+lock_losses                   : 0
+false_lock_frames             : 0
+beacon_in_fov_pct             : 0.0
+beacon_occluded_pct           : 46.33
+time_locked_pct               : 0.0
+lock_retention_pct            : 0.0
+lock_retention_unoccluded_pct : 0.0
+seed                          : 8
+random_scene                  : {'beacon_path': 'lissajous', 'beacon_speed_dps': 1.51, 'decoys': 4, 'blinking_decoys': 3, 'initial_pointing_error_deg': 7.46, 'camera_start_deg': [-17.5, -9.5], 'camera_to_prior_deg': 13.1, 'turbulence_strength': 0.85, 'vibration_strength': 1.9, 'clouds': True}
+identification_method         : hybrid
+candidates_rejected           : 2
+locks_dropped_by_identity     : 0

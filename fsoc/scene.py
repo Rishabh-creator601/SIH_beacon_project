@@ -86,7 +86,7 @@ class Scene:
         for target in self.targets:
             target.update(t, dt)
 
-    def render(self, camera, pose=None, disturb=None):
+    def render(self, camera, pose=None, disturb=None, targets=True):
         """Render the view seen from ``pose`` as a float32 image (not clipped).
 
         ``disturb`` (a DisturbanceModel) optionally adds turbulence effects to
@@ -94,9 +94,44 @@ class Scene:
         blur. Motion blur is computed per source from its motion RELATIVE to
         the camera: a target the camera is following stays sharp while the
         background stars streak, exactly as in a real tracking camera.
+        With ``targets=False`` only the background and stars are drawn (see
+        ``render_frame``, which adds the targets after the clouds).
         """
         pose = pose or camera.pose
         img = np.full((camera.height, camera.width), self.background_level, np.float32)
+        spot = self._spotter(img, camera, disturb)
+
+        xs, ys = camera.world_to_pixel(self.star_az, self.star_el, pose)
+        m = 4
+        visible = (xs > -m) & (xs < camera.width + m) & (ys > -m) & (ys < camera.height + m)
+        for x, y, p in zip(xs[visible], ys[visible], self.star_peak[visible]):
+            spot(x, y, self.star_sigma, p)
+        # Glints (sun reflections, flares) are part of the far scene: drawn
+        # here, before the clouds, so a cloud dims them like the stars.
+        for az, el, peak, sigma in (disturb.extra_sources() if disturb else []):
+            x, y = camera.world_to_pixel(az, el, pose)
+            spot(float(x), float(y), sigma, peak)
+        if targets:
+            self.draw_targets(img, camera, pose, disturb)
+        return img
+
+    def draw_targets(self, img, camera, pose, disturb=None):
+        """Add the targets to ``img``. Each target is dimmed only by
+        the clouds IN FRONT of it, so a beacon closer than a cloud stays bright."""
+        spot = self._spotter(img, camera, disturb)
+        for target in self.targets:
+            dx, dy, gain = disturb.source_effect(target) if disturb else (0.0, 0.0, 1.0)
+            if disturb is not None:
+                gain *= disturb.cloud_transmission(target)
+            peak = target.current_intensity * gain
+            if peak <= 0:
+                continue
+            x, y = camera.world_to_pixel(target.az, target.el, pose)
+            spot(float(x) + dx, float(y) + dy, target.sigma_px, peak, (target.vaz, target.vel))
+        return img
+
+    def _spotter(self, img, camera, disturb):
+        """A function that draws one (turbulence-blurred, motion-streaked) source."""
         blur = disturb.psf_blur_px if disturb else 0.0
         exposure, cam_rate = disturb.motion_blur(camera) if disturb else (0.0, (0.0, 0.0))
 
@@ -111,24 +146,18 @@ class Scene:
             uy = -(src_rate[1] - cam_rate[1]) * camera.ppd_y * exposure
             add_streak(img, x, y, sigma, peak, ux, uy)
 
-        xs, ys = camera.world_to_pixel(self.star_az, self.star_el, pose)
-        m = 4
-        visible = (xs > -m) & (xs < camera.width + m) & (ys > -m) & (ys < camera.height + m)
-        for x, y, p in zip(xs[visible], ys[visible], self.star_peak[visible]):
-            spot(x, y, self.star_sigma, p)
+        return spot
 
-        for target in self.targets:
-            dx, dy, gain = disturb.source_effect(target) if disturb else (0.0, 0.0, 1.0)
-            peak = target.current_intensity * gain
-            if peak <= 0:
-                continue
-            x, y = camera.world_to_pixel(target.az, target.el, pose)
-            spot(float(x) + dx, float(y) + dy, target.sigma_px, peak, (target.vaz, target.vel))
 
-        for az, el, peak, sigma in (disturb.extra_sources() if disturb else []):
-            x, y = camera.world_to_pixel(az, el, pose)
-            spot(float(x), float(y), sigma, peak)
-        return img
+def render_frame(scene, camera, los, disturb):
+    """Full camera frame (float image) in physical order: sky and stars, then
+    the clouds (which dim and veil everything behind them), then the targets -
+    each dimmed only by the clouds in front of it - then glare, heat shimmer
+    and sensor noise."""
+    img = scene.render(camera, los, disturb, targets=False)
+    img = disturb.apply_clouds(img, camera, los)
+    scene.draw_targets(img, camera, los, disturb)
+    return disturb.process_image(img, camera, los)
 
 
 def to_uint8(img):

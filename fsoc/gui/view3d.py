@@ -21,6 +21,7 @@ from collections import deque
 
 import numpy as np
 import pyqtgraph.opengl as gl
+from OpenGL import GL
 from PySide6 import QtGui
 
 from . import theme
@@ -28,6 +29,25 @@ from . import theme
 R = 100.0          # sky dome radius (scene units)
 EL0 = 35.0         # elevation of the simulated sky patch's centre
 MOUNT_H = 6.0      # height of the camera head above ground
+
+# Depth layers (distance from the camera head). Every object keeps its exact
+# direction, so the terminal's view is unchanged, but orbiting the view shows
+# the layers: stars on the far dome, beacon and decoys in front of it, and
+# clouds - as several puffs - closer still.
+STAR_R = 1.0 * R
+SKY_STARS_R = 1.35 * R     # decorative full-sky star field, beyond the dome
+PUFFS = 8                  # spheres per cloud
+VIB_EXAGGERATION = 60.0    # visual scale of the camera-head shaking
+
+
+def depth_r(distance):
+    """Simulation's relative distance (0 = camera, 1 = stars) -> 3D radius."""
+    return R * (0.45 + 0.55 * np.asarray(distance, float))
+
+
+# Star colours by temperature: blue-white, white, yellow-white, orange.
+STAR_COLORS = np.array([[0.70, 0.80, 1.00], [1.00, 1.00, 1.00], [1.00, 0.95, 0.80], [1.00, 0.80, 0.60]])
+STAR_P = [0.25, 0.40, 0.22, 0.13]
 
 
 def to_xyz(az, el, radius=R):
@@ -48,6 +68,18 @@ def _box_mesh(sx, sy, sz, y0=0.0):
     f = np.array([[0, 1, 2], [0, 2, 3], [4, 6, 5], [4, 7, 6], [0, 4, 5], [0, 5, 1],
                   [1, 5, 6], [1, 6, 2], [2, 6, 7], [2, 7, 3], [3, 7, 4], [3, 4, 0]])
     return gl.MeshData(vertexes=v, faces=f)
+
+
+class _CloudMesh(gl.GLMeshItem):
+    """Mesh drawn without writing depth (so overlapping translucent puffs all
+    blend); the depth mask is restored afterwards - a disabled mask would also
+    stop the next frame from clearing the depth buffer."""
+
+    def paint(self):
+        try:
+            super().paint()
+        finally:
+            GL.glDepthMask(GL.GL_TRUE)
 
 
 class SceneView3D(gl.GLViewWidget):
@@ -130,12 +162,31 @@ class SceneView3D(gl.GLViewWidget):
         self.patch_fill.setGLOptions("translucent")
         self.addItem(self.patch_fill)
         self.patch_labels = []
+        # Stars: a faint decorative field over the whole sky (beyond the dome)
+        # and the simulated stars of the sky patch, coloured by temperature.
+        rng = np.random.default_rng(2024)
+        n = 2600
+        az = rng.uniform(-180, 180, n)
+        el_abs = np.degrees(np.arcsin(rng.uniform(np.sin(np.radians(3)), 1, n)))   # uniform on the dome
+        mag = rng.random(n) ** 4
+        col = np.c_[STAR_COLORS[rng.choice(4, n, p=STAR_P)], 0.15 + 0.6 * mag]
+        self.sky_stars = gl.GLScatterPlotItem(pos=to_xyz(az, el_abs - EL0, SKY_STARS_R), size=1.0 + 2.2 * mag,
+                                              color=col)
+        self.sky_stars.setGLOptions("additive")
+        self.addItem(self.sky_stars)
         self.stars = gl.GLScatterPlotItem(pos=np.zeros((1, 3)), size=2.0, color=(0.8, 0.85, 1.0, 0.35))
-        self.stars.setGLOptions("translucent")
+        self.stars.setGLOptions("additive")
         self.addItem(self.stars)
-        self.clouds = gl.GLScatterPlotItem(pos=np.zeros((1, 3)), size=1.0, pxMode=False,
-                                           color=(0.75, 0.8, 0.9, 0.0))
-        self.clouds.setGLOptions("translucent")
+        # Clouds: ONE mesh holding every puff (fast), alpha-blended and drawn
+        # last without writing depth: a beacon in front of a cloud hides the
+        # cloud behind it, a beacon behind a cloud is veiled by it.
+        sph = gl.MeshData.sphere(rows=8, cols=12, radius=1.0)
+        self._sph_v, self._sph_f = sph.vertexes().astype(np.float32), sph.faces()
+        self.clouds = _CloudMesh(meshdata=gl.MeshData(), smooth=True, shader="shaded")
+        self.clouds.setGLOptions({GL.GL_DEPTH_TEST: True, GL.GL_BLEND: True, GL.GL_CULL_FACE: True,
+                                  "glBlendFunc": (GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA),
+                                  "glDepthMask": (GL.GL_FALSE,)})
+        self.clouds.setDepthValue(10)
         self.addItem(self.clouds)
 
         self.look_trail = self._line(np.zeros((2, 3)), theme.rgba(theme.ACCENT, 0.25), 1.0)
@@ -163,6 +214,18 @@ class SceneView3D(gl.GLViewWidget):
         self.addItem(self.estimate)
         self.beacon_label = gl.GLTextItem(pos=(0, 0, 0), text="B", color=QtGui.QColor(theme.BEACON))
         self.addItem(self.beacon_label)
+
+        # Live disturbance cues (amount follows the current levels):
+        #   turbulence    - shimmering air pockets along the line of sight
+        #   sensor noise  - sparkles flickering inside the camera footprint
+        #   vibration     - the camera head shakes (real jitter, exaggerated)
+        self.turb_cells = gl.GLScatterPlotItem(pos=np.zeros((1, 3)), color=(0, 0, 0, 0), pxMode=False)
+        self.turb_cells.setGLOptions("additive")
+        self.addItem(self.turb_cells)
+        self.noise_sparks = gl.GLScatterPlotItem(pos=np.zeros((1, 3)), color=(0, 0, 0, 0))
+        self.noise_sparks.setGLOptions("additive")
+        self.addItem(self.noise_sparks)
+        self._cue_rng = np.random.default_rng(5)
 
     # ------------------------------------------------------------------
     def bind_sim(self, sim):
@@ -193,9 +256,61 @@ class SceneView3D(gl.GLViewWidget):
             item = gl.GLTextItem(pos=p, text=f"{a:+.0f}°", color=QtGui.QColor(theme.TEXT_DIM))
             self.addItem(item)
             self.patch_labels.append(item)
-        self.stars.setData(pos=to_xyz(sim.scene.star_az, sim.scene.star_el, R * 1.003),
-                           size=1.5 + 3.0 * (sim.scene.star_peak / max(sim.scene.star_peak.max(), 1)))
+        rng = np.random.default_rng(99)
+        b = (sim.scene.star_peak - sim.scene.star_peak.min()) / max(np.ptp(sim.scene.star_peak), 1)
+        spos = to_xyz(sim.scene.star_az, sim.scene.star_el, STAR_R)
+        scol = np.c_[STAR_COLORS[rng.choice(4, len(b), p=STAR_P)], 0.30 + 0.60 * b]
+        self.stars.setData(pos=spos, size=1.0 + 2.4 * b, color=scol)
         self.trails = {"beacon": deque(maxlen=self.TRAIL), "look": deque(maxlen=self.LOOK_TRAIL)}
+        # Cloud puff layouts for this scene (cumulus: puffs spread sideways,
+        # a flat-ish base, bigger and brighter puffs on top). Each puff is a
+        # core sphere plus a larger, fainter halo for a soft edge.
+        rng = np.random.default_rng(12345)
+        n_cl = len(sim.disturb.clouds.az) if sim.disturb.clouds is not None else 0
+        x = rng.uniform(-0.85, 0.85, (n_cl, PUFFS))
+        y = 0.45 * (1 - np.abs(x)) * rng.uniform(0.2, 1.0, (n_cl, PUFFS)) - 0.1
+        self.puff_off = np.stack([x, y], -1)
+        self.puff_dd = rng.normal(0, 0.03, (n_cl, PUFFS))
+        self.puff_scale = (0.30 + 0.30 * (1 - np.abs(x))) * rng.uniform(0.8, 1.15, (n_cl, PUFFS))
+        self.puff_shade = 0.80 + 0.20 * (y + 0.1) / 0.55          # darker base, bright tops
+        nv = len(self._sph_v)
+        n = n_cl * PUFFS * 2
+        self._cloud_faces = (self._sph_f[None] + (np.arange(n) * nv)[:, None, None]).reshape(-1, 3)
+        self.clouds.setMeshData(meshdata=gl.MeshData())
+        self.clouds.setVisible(n_cl > 0)
+
+    def _disturbance_cues(self, res):
+        sim, rng = self.sim, self._cue_rng
+        paz, pel = res.los
+        origin = np.array([0.0, 0.0, MOUNT_H])
+        # Turbulence: air pockets between the terminal and the beacon's distance,
+        # jittering every update (shimmer); count and size grow with the level.
+        s = sim.disturb.strength("turbulence")
+        n = int(round(40 * s))
+        if n > 0:
+            reach = float(depth_r(sim.scene.beacon.distance))
+            f = np.sqrt(rng.uniform(0.02, 1.0, n))                        # fraction of the way out
+            az = paz + rng.normal(0, 3.0, n)
+            el = pel + rng.normal(0, 3.0, n)
+            pts = origin + (to_xyz(az, el, reach) - origin) * f[:, None]
+            col = np.tile(theme.rgba("#7fc8ff"), (n, 1))
+            col[:, 3] = rng.uniform(0.03, 0.09, n) * min(s, 2.0)
+            size = reach * f * np.radians(rng.uniform(2.0, 5.0, n))        # world units: ~2-5 deg wide
+            self.turb_cells.setData(pos=pts, size=size, color=col)
+        else:
+            self.turb_cells.setData(pos=np.zeros((1, 3)), color=(0, 0, 0, 0))
+        # Sensor noise: random sparkles on the footprint, re-drawn every update.
+        s = sim.disturb.strength("sensor")
+        n = int(round(30 * s))
+        if n > 0:
+            cam = sim.camera
+            az = paz + rng.uniform(-0.5, 0.5, n) * cam.fov_x
+            el = pel + rng.uniform(-0.5, 0.5, n) * cam.fov_y
+            col = np.tile((1.0, 1.0, 1.0, 0.0), (n, 1))
+            col[:, 3] = rng.uniform(0.25, 0.8, n)
+            self.noise_sparks.setData(pos=to_xyz(az, el, R * 0.985), size=rng.uniform(1.5, 3.5, n), color=col)
+        else:
+            self.noise_sparks.setData(pos=np.zeros((1, 3)), color=(0, 0, 0, 0))
 
     def update_scene(self, res):
         if self.sim is None:
@@ -204,14 +319,18 @@ class SceneView3D(gl.GLViewWidget):
         state = res.track.state.value
         state_col = theme.STATE_COLORS[state]
 
-        # Gimbal: camera head turns with the line of sight.
+        # Gimbal: camera head turns with the line of sight. Vibration (the
+        # difference between the actual and the commanded direction, a few
+        # hundredths of a degree) is exaggerated 60x so the shaking is visible.
         paz, pel = res.los
+        shake = (np.subtract(res.los, res.pose) * VIB_EXAGGERATION) if sim.disturb.vibration else (0.0, 0.0)
         m = QtGui.QMatrix4x4()
         m.translate(0, 0, MOUNT_H)
-        m.rotate(-paz, 0, 0, 1)
-        m.rotate(pel + EL0, 1, 0, 0)
+        m.rotate(-(res.pose[0] + shake[0]), 0, 0, 1)
+        m.rotate(res.pose[1] + shake[1] + EL0, 1, 0, 0)
         self.head.setTransform(m)
         self.lens.setTransform(m)
+        self._disturbance_cues(res)
 
         # Line of sight, its history and the field-of-view pyramid + footprint.
         origin = np.array([0.0, 0.0, MOUNT_H])
@@ -233,7 +352,7 @@ class SceneView3D(gl.GLViewWidget):
 
         # Beacon (size pulses with its blink) and its trail.
         b = sim.scene.beacon
-        bpos = to_xyz(b.az, b.el, R * 0.985)
+        bpos = to_xyz(b.az, b.el, depth_r(b.distance))
         on = b.current_intensity / max(b.intensity, 1)
         self.beacon.setData(pos=bpos[None], size=8 + 10 * on)
         self.beacon_glow.setData(pos=bpos[None], size=20 + 26 * on, color=theme.rgba(theme.BEACON, 0.10 + 0.25 * on))
@@ -248,7 +367,7 @@ class SceneView3D(gl.GLViewWidget):
 
         decoys = [t for t in sim.scene.targets if not t.is_beacon]
         if decoys:
-            dpos = to_xyz([t.az for t in decoys], [t.el for t in decoys], R * 0.985)
+            dpos = to_xyz([t.az for t in decoys], [t.el for t in decoys], depth_r([t.distance for t in decoys]))
             on = np.array([t.current_intensity / max(t.intensity, 1) for t in decoys])
             col = np.tile(theme.rgba(theme.DECOY), (len(decoys), 1))
             col[:, 3] = 0.35 + 0.65 * on
@@ -259,21 +378,38 @@ class SceneView3D(gl.GLViewWidget):
         # Tracker estimate.
         if res.track.estimate is not None:
             e = res.track.estimate
-            self.estimate.setData(pos=to_xyz(e[0], e[1], R * 0.98)[None], color=theme.rgba(theme.ESTIMATE, 0.95))
+            self.estimate.setData(pos=to_xyz(e[0], e[1], depth_r(b.distance) * 0.99)[None],
+                                  color=theme.rgba(theme.ESTIMATE, 0.95))
         else:
             self.estimate.setData(color=(0, 0, 0, 0))
 
-        # Clouds: soft translucent blobs sized to their angular size.
+        # Clouds at their simulated distance, covering their true angular size;
+        # optically thicker clouds are drawn more opaque.
         clouds = sim.disturb.clouds
-        if clouds is not None:
-            cpos = to_xyz(clouds.az, clouds.el, R * 0.97)
-            size = 2 * R * np.radians(clouds.size) * 1.6
-            alpha = np.clip(0.08 + 0.05 * clouds.depth, 0.08, 0.35)
-            col = np.tile((0.78, 0.84, 0.95, 0.0), (len(cpos), 1))
-            col[:, 3] = alpha
-            self.clouds.setData(pos=cpos, size=size, color=col)
-        else:
-            self.clouds.setData(pos=np.zeros((1, 3)), color=(0, 0, 0, 0))
+        if clouds is not None and len(self.puff_off):
+            n = min(len(clouds.az), len(self.puff_off))
+            k = 2.3 * clouds.size[:n, None]
+            az = clouds.az[:n, None] + self.puff_off[:n, :, 0] * k
+            el = clouds.el[:n, None] + self.puff_off[:n, :, 1] * k
+            dist = depth_r(clouds.distance[:n, None] + self.puff_dd[:n])
+            pos = to_xyz(az, el, dist).reshape(-1, 3)                       # (n*PUFFS, 3)
+            rad = (dist * np.radians(k) * self.puff_scale[:n]).reshape(-1)
+            alpha = np.repeat(np.clip(0.055 + 0.022 * clouds.depth[:n], 0.07, 0.15), PUFFS)
+            shade = self.puff_shade[:n].reshape(-1)
+            # core + halo for every puff
+            pos2 = np.concatenate([pos, pos])
+            rad2 = np.concatenate([rad, rad * 1.45])
+            a2 = np.concatenate([alpha, alpha * 0.4])
+            s2 = np.concatenate([shade, shade])
+            v = self._sph_v[None] * np.array([1.0, 1.0, 0.8], np.float32) * rad2[:, None, None] + pos2[:, None, :]
+            col = np.stack([s2, s2, np.minimum(s2 + 0.05, 1.0), a2], -1)
+            vc = np.repeat(col[:, None, :], len(self._sph_v), axis=1)
+            md = gl.MeshData(vertexes=v.reshape(-1, 3).astype(np.float32),
+                             faces=self._cloud_faces[:len(pos2) * len(self._sph_f)],
+                             vertexColors=vc.reshape(-1, 4).astype(np.float32))
+            # Normals of a (slightly flattened) sphere: the unit-sphere directions.
+            md._vertexNormals = np.tile(self._sph_v, (len(pos2), 1))
+            self.clouds.setMeshData(meshdata=md)
 
         if self.auto_orbit:
             self.orbit(0.25, 0)

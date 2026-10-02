@@ -163,21 +163,30 @@ class Clouds:
         self.el = rng.uniform(el_min, el_max, n)
         self.size = rng.uniform(*cfg.get("size_deg", [1.5, 4.0]), n)
         self.depth = rng.uniform(*cfg.get("optical_depth", [1.0, 4.0]), n) * s
+        # Relative distance of each cloud (0 = camera, 1 = stars). Drawn from a
+        # generator seeded by the cloud positions so the shared random stream -
+        # and with it every other part of the scene - is unchanged.
+        own = np.random.default_rng(np.frombuffer(self.az.tobytes(), np.uint32))
+        self.distance = own.uniform(*cfg.get("distance", [0.3, 0.7]), n)
 
     def update(self, dt):
         az_min, az_max, el_min, el_max = self.bounds
         self.az = (self.az + self.wind[0] * dt - az_min) % (az_max - az_min) + az_min
         self.el = (self.el + self.wind[1] * dt - el_min) % (el_max - el_min) + el_min
 
-    def _depth(self, az, el):
+    def _depth(self, az, el, behind=None):
+        """Optical depth along (az, el); with ``behind`` = a distance, only the
+        clouds nearer than that distance count."""
         az, el = np.asarray(az, float), np.asarray(el, float)
         tau = np.zeros(np.broadcast(az, el).shape)
-        for ca, ce, sz, d in zip(self.az, self.el, self.size, self.depth):
+        for ca, ce, sz, d, r in zip(self.az, self.el, self.size, self.depth, self.distance):
+            if behind is not None and r >= behind:
+                continue
             tau += d * np.exp(-((az - ca) ** 2 + (el - ce) ** 2) / (2 * sz * sz))
         return tau
 
-    def transmission_at(self, az, el):
-        return float(np.exp(-self._depth(az, el)))
+    def transmission_at(self, az, el, behind=None):
+        return float(np.exp(-self._depth(az, el, behind)))
 
     def apply(self, img, camera, pose):
         gaz, gel = _world_grid(camera, pose)
@@ -309,7 +318,7 @@ class DisturbanceModel:
 
         c = section("vibration");  self.vibration = PlatformVibration(c, rng) if c else None
         c = section("turbulence"); self.turbulence = Turbulence(c, rng, camera) if c else None
-        c = section("clouds");     self.clouds = Clouds(c, rng, scene.bounds) if c else None
+        c = section("clouds");     self.clouds = Clouds(c, rng, scene.bounds) if c else None   # noqa: E702
         c = section("glare");      self.glare = Glare(c) if c else None
         c = section("dropouts");   self.dropouts = BeaconDropouts(c, rng) if c else None
         c = section("glints");     self.glints = Glints(c, rng) if c else None
@@ -395,12 +404,21 @@ class DisturbanceModel:
             return True
         # Below ~50 % transmission the dimmed beacon falls under the detection
         # threshold, so the frame counts as occluded (not a tracker failure).
-        return bool(self.clouds and self.clouds.transmission_at(beacon.az, beacon.el) < 0.5)
+        return self.cloud_transmission(beacon) < 0.5
+
+    def cloud_transmission(self, target):
+        """Fraction of a target's light that passes the clouds in front of it."""
+        if not self.clouds:
+            return 1.0
+        return self.clouds.transmission_at(target.az, target.el, behind=target.distance)
 
     # --- whole-image effects ---------------------------------------------
+    def apply_clouds(self, img, camera, los):
+        """Clouds dim and veil the sky and stars behind them (targets are added
+        afterwards, each with its own cloud transmission)."""
+        return self.clouds.apply(img, camera, los) if self.clouds else img
+
     def process_image(self, img, camera, los):
-        if self.clouds:
-            img = self.clouds.apply(img, camera, los)
         if self.glare:
             img = self.glare.apply(img, camera, los)
         if self.turbulence:

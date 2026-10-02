@@ -21,7 +21,7 @@ from .disturbances import DisturbanceModel
 from .identification import BeaconIdentifier
 from .metrics import PerformanceMonitor
 from .randomizer import randomize_config
-from .scene import Scene, to_uint8
+from .scene import Scene, render_frame, to_uint8
 from .tracker import BeaconTracker, TrackOutput
 
 
@@ -66,6 +66,12 @@ class Simulation:
         self.id_method = id_cfg["method"]
         self.tracker = BeaconTracker(cfg["tracker"], id_cfg)
         self.controller = PointingController(cfg["controller"], self.camera)
+        # Live position report of the partner (GPS / ephemeris stream): its true
+        # position plus a fixed reporting error. Used to point the search.
+        offset = (cfg["controller"].get("search") or {}).get("prior_offset_deg")
+        if offset is not None:
+            b, (ox, oy) = self.scene.beacon, offset
+            self.controller.prior_fn = lambda: (b.az + ox, b.el + oy)
         self.metrics = PerformanceMonitor(cfg["metrics"], self.camera, self.fps)
         self.metrics.extra = lambda: {
             "seed": self.seed,
@@ -93,8 +99,7 @@ class Simulation:
         t0 = time.perf_counter()
         pose = self.camera.pose
         los = self.disturb.line_of_sight(pose)
-        img = self.scene.render(self.camera, los, self.disturb)
-        frame = to_uint8(self.disturb.process_image(img, self.camera, los))
+        frame = to_uint8(render_frame(self.scene, self.camera, los, self.disturb))
         t1 = time.perf_counter()
 
         # 3. Detection -> world coordinates -> identification (P(beacon) per

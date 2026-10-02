@@ -41,7 +41,7 @@ from fsoc.config import deep_merge, load_config             # noqa: E402
 from fsoc.detector import BlobDetector                      # noqa: E402
 from fsoc.disturbances import DisturbanceModel, GaussMarkov  # noqa: E402
 from fsoc.identification import CandidateTracker            # noqa: E402
-from fsoc.scene import Scene, to_uint8                      # noqa: E402
+from fsoc.scene import Scene, render_frame, to_uint8                   # noqa: E402
 
 KIND_NAMES = ["beacon", "steady_decoy", "wrong_rate_decoy", "near_rate_decoy", "glint", "other",
               "harmonic_decoy"]
@@ -157,7 +157,7 @@ def run_episode(args):
         disturb.update(t, dt, camera)
         pose = camera.pose
         los = disturb.line_of_sight(pose)
-        frame = to_uint8(disturb.process_image(scene.render(camera, los, disturb), camera, los))
+        frame = to_uint8(render_frame(scene, camera, los, disturb))
         fx_px, fy_px = camera.world_to_pixel(focus.az, focus.el, pose)
         roi = (float(fx_px), float(fy_px)) if camera.in_fov(focus.az, focus.el, pose) else None
         dets = detector.detect(frame, roi)

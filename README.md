@@ -59,12 +59,20 @@ Results are saved after every run, so an interrupted evaluation resumes where it
 ## Desktop application (`app.py`)
 
 - **Camera feed** with detections, beacon scores, track estimate and tracking window
-- **3D situational view**: pan-tilt terminal, sky dome, field-of-view pyramid coloured
-  by tracker state, search path, beacon trail, decoys, clouds (drag to rotate, wheel to zoom)
+- **Situational view, 3D / 2D / both**: the 3D view shows the pan-tilt terminal, sky dome and
+  field-of-view pyramid with depth (a coloured star field far away, beacon, decoys and soft
+  cumulus clouds at their simulated distances; drag to rotate, wheel to zoom) and live cues for
+  the disturbances (shimmering air pockets = turbulence, sparkles in the footprint = sensor noise,
+  shaking camera head = vibration); the 2D sky map shows the same scene face-on in azimuth /
+  elevation. Both show the field of view coloured by tracker state, the search path, the beacon
+  ("B") and its trail, decoys and clouds
 - **Live plots** of pointing error and beacon score; **performance cards**
-- Controls: start / pause / restart, **new random scene**, scenario, identification
-  method, **number of decoys** (random 2-5 or fixed 2-8), speed (0.5x to max), **live sliders**
-  for turbulence, vibration and sensor noise, camera-feed **zoom** (Fit / 2x / 4x / 8x, centred
+- Controls: start / pause / restart, **new random scene**, scenario, **sky area** (standard
+  az ±30° × el ±20°, or wide az ±60° × el ±30°), identification method, **decoy range**
+  (from A to B, 2-8), speed (0.5x to max), **disturbance sliders** for turbulence, vibration and
+  sensor noise with **Apply & continue** (takes effect from the current moment) or **Apply &
+  restart** (same scene from the beginning) and an **ⓘ** window that explains each disturbance
+  with pictures generated at the current levels, camera-feed **zoom** (Fit / 2x / 4x, centred
   on the tracked beacon), legend popup (ⓘ), report export.
 
 **Keyboard (no mouse needed):**
@@ -72,20 +80,24 @@ Results are saved after every run, so an interrupted evaluation resumes where it
 | Key | Action | Key | Action |
 |---|---|---|---|
 | `Space` | start / pause | `+` / `-` / `0` | camera zoom in / out / fit |
-| `R` | restart same scene | `A` / `D` | 3D view rotate |
-| `N` | new random scene | `W` / `S` | 3D view tilt |
-| `T` | show true positions | `Q` / `E` | 3D view zoom |
+| `R` | restart same scene | `M` | situational view: 3D / 2D / both |
+| `N` | new random scene | `A` / `D` | 3D view rotate |
+| `C` | disturbances: apply & continue | `W` / `S` | 3D view tilt |
+| `Shift+R` | disturbances: apply & restart | `Q` / `E` | 3D view zoom |
 | `I` | legend | `V` | next 3D preset view |
-| `H` / `F1` | list of shortcuts | | |
+| `F2` | disturbances explained | | |
+| `H` / `F1` | list of shortcuts | `Tab` / arrows | move between controls / change a value |
 
 ## Random scenes
 
 By default every run is a new random scene (`randomize` in `config/default.yaml`):
-random beacon path (lissajous / circular / random walk, random speed), a random number
-of decoys (2-5, steady or blinking at wrong rates), random turbulence, vibration and
-clouds, and a random initial pointing error (the camera starts aimed at the beacon's
-"reported" GPS/ephemeris position). The run's **seed** is shown in the app and saved
-in every report; enter it (or pass `--seed`) to replay the exact run.
+the beacon flies a random walk (smooth random manoeuvres, random speed) and also drifts in
+depth, passing in front of and behind clouds - a cloud only dims or hides lights behind it;
+a random number of decoys (2-5, steady or blinking at wrong rates, each at its own distance),
+random turbulence, vibration and clouds, and a random error of 3-10° in the beacon's
+"reported" GPS/ephemeris position. The camera always starts at the centre of the sky, slews
+to the reported position and searches from there. The run's **seed** is saved in every report; pass it
+with `--seed` to replay the exact run.
 
 ## Scenarios
 

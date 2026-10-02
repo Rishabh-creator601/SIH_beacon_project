@@ -43,9 +43,12 @@ def random_path(rng, bounds, kinds, speed):
     """
     az_min, az_max, el_min, el_max = bounds
     kind = str(rng.choice(kinds))
+    # Path sizes are capped at those of the standard 60 x 40 deg sky: a larger
+    # sky lets a path be placed anywhere in it, but the target does not fly a
+    # bigger pattern just because the camera can look further.
     if kind == "lissajous":
-        room_az = (az_max - az_min) / 2 - 3.0
-        room_el = (el_max - el_min) / 2 - 3.0
+        room_az = min((az_max - az_min) / 2 - 3.0, 27.0)
+        room_el = min((el_max - el_min) / 2 - 3.0, 17.0)
         amp = [float(rng.uniform(0.3, 0.9) * room_az), float(rng.uniform(0.3, 0.9) * room_el)]
         center = [float(rng.uniform(az_min + amp[0] + 2, az_max - amp[0] - 2)),
                   float(rng.uniform(el_min + amp[1] + 2, el_max - amp[1] - 2))]
@@ -56,7 +59,7 @@ def random_path(rng, bounds, kinds, speed):
                       "frequency": [f_az, f_az * ratio],
                       "phase": [float(rng.uniform(0, 2 * math.pi)), float(rng.uniform(0, 2 * math.pi))]}
     if kind == "circular":
-        room = min(az_max - az_min, el_max - el_min) / 2 - 3.0
+        room = min(min(az_max - az_min, el_max - el_min) / 2 - 3.0, 17.0)
         radius = float(rng.uniform(0.25, 0.8) * room)
         center = [float(rng.uniform(az_min + radius + 2, az_max - radius - 2)),
                   float(rng.uniform(el_min + radius + 2, el_max - radius - 2))]
@@ -105,27 +108,48 @@ def randomize_config(cfg, rng):
             blinking += 1
         targets.append(d)
 
-    # --- Initial pointing: like a real terminal, the camera is first pointed
-    # open-loop at the partner's reported position (GPS / ephemeris), which is
-    # off by a random error; the camera must then search that uncertainty.
+    # --- Initial pointing: like a real terminal, the search starts at the
+    # partner's reported position (GPS / ephemeris), which is off by a random
+    # error; the camera must then search that uncertainty.
     start = Target(beacon, bounds, np.random.default_rng(0))
     err = _u(rng, r.get("initial_pointing_error_deg", [3.0, 10.0]))
     ang = float(rng.uniform(0, 2 * math.pi))
     az_min, az_max, el_min, el_max = bounds
-    pointing = [float(np.clip(start.az + err * math.cos(ang), az_min, az_max)),
-                float(np.clip(start.el + err * math.sin(ang), el_min, el_max))]
+    prior = [float(np.clip(start.az + err * math.cos(ang), az_min, az_max)),
+             float(np.clip(start.el + err * math.sin(ang), el_min, el_max))]
 
     # --- Atmosphere and platform.
     turb = _u(rng, r.get("turbulence_strength", [0.5, 2.0]))
     vib = _u(rng, r.get("vibration_strength", [0.3, 2.0]))
     clouds = bool(rng.random() < r.get("cloud_probability", 0.5))
+    # Cloud count is chosen for the standard 60 x 40 deg sky; keep the same
+    # cloud density on a larger sky.
+    area = (az_max - az_min) * (el_max - el_min) / (60.0 * 40.0)
+    n_clouds = max(1, round(int(rng.integers(2, 7)) * area))
+
+    # --- Camera start: the gimbal always starts at the centre of the sky and
+    # first slews to the reported position before searching.
+    cam = [(az_min + az_max) / 2.0, (el_min + el_max) / 2.0]
+
+    # --- Depth: the beacon and each decoy get a distance (0 = camera,
+    # 1 = stars); clouds have their own, so a light can be in front of or
+    # behind any cloud. (Drawn last: the rest of the scene does not change.)
+    for tgt in targets:
+        key = "beacon_distance" if tgt.get("is_beacon") else "decoy_distance"
+        tgt["distance"] = _u(rng, r.get(key, [0.15, 0.95]))
+    walk = r.get("beacon_distance_walk")
+    if walk:
+        targets[0]["distance_walk"] = dict(walk)
+
     overrides = {
-        "camera": {"initial_pointing": pointing},
+        "camera": {"initial_pointing": cam},
+        "controller": {"search": {"prior_deg": prior,
+                                  "prior_offset_deg": [prior[0] - start.az, prior[1] - start.el]}},
         "targets": targets,
         "disturbances": {
             "turbulence": {"enabled": True, "strength": turb},
             "vibration": {"enabled": True, "strength": vib},
-            "clouds": {"enabled": clouds, "count": int(rng.integers(2, 7))},
+            "clouds": {"enabled": clouds, "count": n_clouds},
         },
     }
     info = {
@@ -134,6 +158,9 @@ def randomize_config(cfg, rng):
         "decoys": n_decoys,
         "blinking_decoys": blinking,
         "initial_pointing_error_deg": round(err, 2),
+        "camera_start_deg": [round(cam[0], 1), round(cam[1], 1)],
+        "beacon_distance": round(targets[0]["distance"], 2),
+        "camera_to_prior_deg": round(math.hypot(cam[0] - prior[0], cam[1] - prior[1]), 1),
         "turbulence_strength": round(turb, 2),
         "vibration_strength": round(vib, 2),
         "clouds": clouds,

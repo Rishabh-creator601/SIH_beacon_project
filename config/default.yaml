@@ -18,7 +18,7 @@ simulation:
 # scenarios in scenarios/ switch this off.
 randomize:
   enabled: true
-  beacon_paths: [lissajous, circular, random_walk]
+  beacon_paths: [random_walk]     # random manoeuvres (lissajous / circular also possible)
   beacon_speed_dps: [0.8, 5.0]
   beacon_intensity: [190, 250]
   decoys: [2, 5]                  # min / max number of decoys (at least 2; the app can fix it)
@@ -28,7 +28,12 @@ randomize:
   turbulence_strength: [0.5, 2.0]   # >2 is extreme (twinkle beyond +-60 %)
   vibration_strength: [0.3, 2.0]
   cloud_probability: 0.5
-  initial_pointing_error_deg: [3.0, 10.0]   # open-loop (GPS/ephemeris) pointing error
+  initial_pointing_error_deg: [3.0, 10.0]   # error of the reported (GPS/ephemeris) position;
+                                            # the camera starts at the sky centre, slews there, searches
+  beacon_distance: [0.15, 0.95]   # relative distance (0 = camera, 1 = stars): the beacon / decoys
+  decoy_distance: [0.15, 0.95]    # can be in front of or behind each cloud
+  beacon_distance_walk: {speed: 0.04, tau_s: 5.0, range: [0.12, 0.97]}   # the beacon also drifts
+                                  # in depth, passing in front of / behind clouds during a run
 
 world:
   az_range: [-30.0, 30.0]   # azimuth extent of the virtual sky (deg)
@@ -54,6 +59,7 @@ targets:
     is_beacon: true
     intensity: 240          # peak brightness of the beacon spot
     sigma_px: 2.0           # spot size (Gaussian sigma, pixels)
+    distance: 0.9           # relative distance (0 = camera, 1 = stars); clouds only dim what is behind them
     blink: {frequency_hz: 4.0, duty: 0.7, off_level: 0.3}
     trajectory:
       type: lissajous
@@ -160,6 +166,7 @@ disturbances:
     size_deg: [1.5, 3.5]
     optical_depth: [1.0, 4.0]   # transmission = exp(-depth) at cloud centre
     wind_dps: [0.8, 0.15]
+    distance: [0.3, 0.7]    # relative distance of each cloud (targets default to 0.9, i.e. behind)
     brightness: 35          # cloud glow level (0-255)
 
   dropouts:                 # beacon fully blocked for a while

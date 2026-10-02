@@ -65,13 +65,13 @@ class StateBadge(QtWidgets.QLabel):
 class CameraView(QtWidgets.QLabel):
     """Shows a BGR numpy frame, scaled to fit while keeping its aspect ratio.
 
-    Zoom (1x - 8x, mouse wheel or set_zoom) crops a window around ``center``
+    Zoom (1x - 4x, mouse wheel or set_zoom) crops a window around ``center``
     - normally the tracked beacon - and shows it with crisp pixels, so the
     blink, noise and detection boxes of a few-pixel target become visible.
     """
 
     zoomChanged = QtCore.Signal(int)
-    LEVELS = (1, 2, 4, 8)
+    LEVELS = (1, 2, 4)
 
     def __init__(self):
         super().__init__()

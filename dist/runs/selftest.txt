@@ -1,0 +1,4 @@
+SELFTEST PASSED
+identification method: hybrid
+frames: 300  acquired: False  time locked: 0.0 %
+files: frames.csv, report.html, report.pdf, summary.json, summary.txt

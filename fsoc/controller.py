@@ -36,7 +36,13 @@ class PointingController:
         self.search_kp = float(s.get("kp", 6.0))
         self.predict_tau = max(float(s.get("predict_tau_s", 3.0)), 1e-3)
         self.local_passes = max(int(s.get("local_passes", 4)), 1)
-        self.home = (camera.az, camera.el)
+        # Where the first search is centred: the partner's reported position
+        # (GPS / ephemeris prior) if known, else where the camera starts.
+        prior = s.get("prior_deg")
+        self.home = tuple(map(float, prior)) if prior is not None else (camera.az, camera.el)
+        # Optional live position report of the partner (GPS / ephemeris stream):
+        # a function returning (az, el). Set by the simulation when available.
+        self.prior_fn = None
         self.bounds = (camera.az_min, camera.az_max, camera.el_min, camera.el_max)
         self.reset()
 
@@ -47,6 +53,7 @@ class PointingController:
         self.theta = 0.0
         self.raster_s = None
         self.search_point = None
+        self.follow_prior = False
 
     # ------------------------------------------------------------------
     def compute(self, track, camera, dt):
@@ -76,28 +83,41 @@ class PointingController:
         self.integral[:] = 0.0
         self.prev_error = None
         if self.search_center is None:
-            # Start a new spiral from the last place the beacon was seen.
+            # Start a new spiral from the last place the beacon was seen - or,
+            # before the first sighting, around the partner's reported position.
             self.search_center = track.last_known or self.home
             self.search_velocity = track.last_velocity if track.last_known else (0.0, 0.0)
+            self.follow_prior = track.last_known is None and self.prior_fn is not None
             self.search_time = 0.0
             self.theta = 0.0
             self.raster_s = None
             self.spiral_passes = 0
         self.search_time += dt
 
-        # Predictive search: the spiral centre keeps drifting along the
-        # beacon's last known velocity (fading out with time constant tau,
-        # since the prediction becomes less trustworthy the longer it runs).
-        drift = self.predict_tau * (1.0 - math.exp(-self.search_time / self.predict_tau))
-        cx = self.search_center[0] + self.search_velocity[0] * drift
-        cy = self.search_center[1] + self.search_velocity[1] * drift
+        if self.follow_prior:
+            # The spiral follows the live position report (it moves with the
+            # partner, offset by the report's error).
+            cx, cy = self.prior_fn()
+        else:
+            # Predictive search: the spiral centre keeps drifting along the
+            # beacon's last known velocity (fading out with time constant tau,
+            # since the prediction becomes less trustworthy the longer it runs).
+            drift = self.predict_tau * (1.0 - math.exp(-self.search_time / self.predict_tau))
+            cx = self.search_center[0] + self.search_velocity[0] * drift
+            cy = self.search_center[1] + self.search_velocity[1] * drift
 
         # Search policy: the local spiral around the best guess is flown
         # `local_passes` times (a hidden target most often reappears near where
         # it was lost), then ONE raster pass over the whole sky (so no
         # direction is missed for ever), then back to the local spiral.
         az_min, az_max, el_min, el_max = self.bounds
-        if self.raster_s is None:
+        ccx, ccy = min(max(cx, az_min), az_max), min(max(cy, el_min), el_max)
+        if (self.raster_s is None and self.theta == 0.0 and self.spiral_passes == 0
+                and math.hypot(ccx - camera.az, ccy - camera.el) > self.spacing / 2):
+            # Far from the search centre (e.g. the camera starts parked away
+            # from the reported position): slew there first, then spiral.
+            px, py = ccx, ccy
+        elif self.raster_s is None:
             # Local spiral r = spacing * theta / 2pi, at ~constant speed.
             r = self.spacing * self.theta / (2 * math.pi)
             self.theta += self.scan_speed * dt / max(r, self.spacing / 2)
@@ -106,7 +126,12 @@ class PointingController:
                 self.theta, r = 0.0, 0.0
                 self.spiral_passes += 1
                 if self.spiral_passes >= self.local_passes:
-                    self.raster_s = 0.0
+                    if self.prior_fn is not None and not self.follow_prior:
+                        # Lost for long: fall back to the live position report
+                        # (much faster than scanning the whole sky).
+                        self.follow_prior, self.spiral_passes = True, 0
+                    else:
+                        self.raster_s = 0.0
             px = min(max(cx + r * math.cos(self.theta), az_min), az_max)
             py = min(max(cy + r * math.sin(self.theta), el_min), el_max)
         if self.raster_s is not None:
@@ -115,6 +140,7 @@ class PointingController:
             px, py, done = self._raster_point(self.raster_s)
             if done:
                 self.raster_s, self.spiral_passes = None, 0
+                self.follow_prior = False
         self.search_point = (px, py)
         return (self.search_kp * (px - camera.az), self.search_kp * (py - camera.el))
 
